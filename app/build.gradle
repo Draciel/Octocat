@@ -22,6 +22,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -43,6 +47,13 @@ dependencies {
     implementation appDependencies.rxkotlin
     implementation appDependencies.rxandroid
     implementation appDependencies.timber
+    implementation appDependencies.gson
+    implementation appDependencies.rxjava2RetrofitAdapter
+    implementation appDependencies.gsonRetrofitAdapter
+    implementation appDependencies.loggingInterceptor
+    implementation appDependencies.okHttp
+    implementation appDependencies.okio
+    implementation appDependencies.abpThreeten
 
     testImplementation testDependencies.junit
     androidTestImplementation testDependencies.runner

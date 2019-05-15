@@ -20,22 +20,37 @@ ext {
     rx_android_version = '2.1.1'
     rx_kotlin_version = '2.3.0'
     timber_version = '4.7.1'
+    gson_version = "2.8.5"
+    rx_java2_retrofit_adapter_version = '2.5.0'
+    gson_retrofit_adapter_version = '2.5.0'
+    okhttp_logging_interceptor_version = "4.0.0-alpha01"
+    okhttp_version = "4.0.0-alpha01"
+    okio_version = "2.2.2"
+    abp_threeten_version = "1.2.0"
 
     appDependencies = [
-            dagger2         : "com.google.dagger:dagger:$dagger2_version",
-            dagger2Compiler : "com.google.dagger:dagger-compiler:$dagger2_compiler_version",
-            kotlinStdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
-            appcompat       : "androidx.appcompat:appcompat:$androidx_version",
-            corektx         : "androidx.core:core-ktx:$androidx_version",
-            material        : "com.google.android.material:material:$android_material_version",
-            constraintLayout: "androidx.constraintlayout:constraintlayout:$constraint_layout_version",
-            glide           : "com.github.bumptech.glide:glide:$glide_core_version",
-            glideCompiler   : "com.github.bumptech.glide:compiler:$glide_compiler_version",
-            retrofit        : "com.squareup.retrofit2:retrofit:$retrofit_version",
-            rxjava2         : "io.reactivex.rxjava2:rxjava:$rx_java2_version",
-            rxkotlin        : "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version",
-            rxandroid       : "io.reactivex.rxjava2:rxandroid:$rx_android_version",
-            timber          : "com.jakewharton.timber:timber:$timber_version"
+            dagger2               : "com.google.dagger:dagger:$dagger2_version",
+            dagger2Compiler       : "com.google.dagger:dagger-compiler:$dagger2_compiler_version",
+            kotlinStdlib          : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+            appcompat             : "androidx.appcompat:appcompat:$androidx_version",
+            corektx               : "androidx.core:core-ktx:$androidx_version",
+            material              : "com.google.android.material:material:$android_material_version",
+            constraintLayout      : "androidx.constraintlayout:constraintlayout:$constraint_layout_version",
+            glide                 : "com.github.bumptech.glide:glide:$glide_core_version",
+            glideCompiler         : "com.github.bumptech.glide:compiler:$glide_compiler_version",
+            retrofit              : "com.squareup.retrofit2:retrofit:$retrofit_version",
+            rxjava2               : "io.reactivex.rxjava2:rxjava:$rx_java2_version",
+            rxkotlin              : "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version",
+            rxandroid             : "io.reactivex.rxjava2:rxandroid:$rx_android_version",
+            timber                : "com.jakewharton.timber:timber:$timber_version",
+            gson                  : "com.google.code.gson:gson:$gson_version",
+            rxjava2RetrofitAdapter: "com.squareup.retrofit2:adapter-rxjava2:$rx_java2_retrofit_adapter_version",
+            gsonRetrofitAdapter   : "com.squareup.retrofit2:converter-gson:$gson_retrofit_adapter_version",
+            loggingInterceptor    : "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_interceptor_version",
+            okHttp                : "com.squareup.okhttp3:okhttp:$okhttp_version",
+            okio                  : "com.squareup.okio:okio:$okio_version",
+            abpThreeten           : "com.jakewharton.threetenabp:threetenabp:$abp_threeten_version"
+
     ]
 
     junit_version = '4.12'

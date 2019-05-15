@@ -2,13 +2,14 @@ package pl.draciel.octocat
 
 import android.app.Application
 import android.content.Context
+import com.jakewharton.threetenabp.AndroidThreeTen
 import pl.draciel.octocat.core.di.components.AppComponent
 import pl.draciel.octocat.core.di.components.DaggerAppComponent
 import pl.draciel.octocat.core.di.modules.AppModule
 import timber.log.Timber
 
 
-class GitApp : Application() {
+class GithubApp : Application() {
 
     val appComponent: AppComponent by lazy { createAppComponent() }
 
@@ -24,12 +25,14 @@ class GitApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        AndroidThreeTen.init(this)
     }
 
     companion object {
 
         @JvmStatic
-        fun getApplication(context: Context): GitApp = context.applicationContext as GitApp
+        fun getApplication(context: Context): GithubApp = context.applicationContext as GithubApp
 
     }
 }

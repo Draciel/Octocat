@@ -1,0 +1,51 @@
+allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+
+ext {
+
+    kotlin_version = '1.3.21'
+    dagger2_version = '2.22.1'
+    dagger2_compiler_version = dagger2_version
+    androidx_version = '1.0.2'
+    android_material_version = '1.0.0'
+    constraint_layout_version = '1.1.3'
+    glide_core_version = '4.9.0'
+    glide_compiler_version = glide_core_version
+    retrofit_version = '2.5.0'
+    rx_java2_version = '2.2.8'
+    rx_android_version = '2.1.1'
+    rx_kotlin_version = '2.3.0'
+    timber_version = '4.7.1'
+
+    appDependencies = [
+            dagger2         : "com.google.dagger:dagger:$dagger2_version",
+            dagger2Compiler : "com.google.dagger:dagger-compiler:$dagger2_compiler_version",
+            kotlinStdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
+            appcompat       : "androidx.appcompat:appcompat:$androidx_version",
+            corektx         : "androidx.core:core-ktx:$androidx_version",
+            material        : "com.google.android.material:material:$android_material_version",
+            constraintLayout: "androidx.constraintlayout:constraintlayout:$constraint_layout_version",
+            glide           : "com.github.bumptech.glide:glide:$glide_core_version",
+            glideCompiler   : "com.github.bumptech.glide:compiler:$glide_compiler_version",
+            retrofit        : "com.squareup.retrofit2:retrofit:$retrofit_version",
+            rxjava2         : "io.reactivex.rxjava2:rxjava:$rx_java2_version",
+            rxkotlin        : "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version",
+            rxandroid       : "io.reactivex.rxjava2:rxandroid:$rx_android_version",
+            timber          : "com.jakewharton.timber:timber:$timber_version"
+    ]
+
+    junit_version = '4.12'
+    runner_version = '1.1.1'
+    espresso_core_version = '3.1.1'
+
+    testDependencies = [
+            junit       : "junit:junit:$junit_version",
+            runner      : "androidx.test:runner:$runner_version",
+            espressoCore: "androidx.test.espresso:espresso-core:$espresso_core_version"
+    ]
+
+}

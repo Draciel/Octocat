@@ -9,5 +9,6 @@ data class CodeRepository(
     val pushedAt: LocalDateTime,
     val language: String,
     val watchers: Int,
-    val forks: Int
+    val forks: Int,
+    val id: Long
 )

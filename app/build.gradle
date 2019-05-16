@@ -55,9 +55,10 @@ dependencies {
     implementation appDependencies.okio
     implementation appDependencies.abpThreeten
 
+    testImplementation testDependencies.spekFramework
     testImplementation testDependencies.junit
+    testImplementation testDependencies.abpThreeten
     androidTestImplementation testDependencies.runner
     androidTestImplementation testDependencies.espressoCore
-
 
 }

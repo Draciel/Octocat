@@ -50,17 +50,20 @@ ext {
             okHttp                : "com.squareup.okhttp3:okhttp:$okhttp_version",
             okio                  : "com.squareup.okio:okio:$okio_version",
             abpThreeten           : "com.jakewharton.threetenabp:threetenabp:$abp_threeten_version"
-
     ]
 
     junit_version = '4.12'
     runner_version = '1.1.1'
     espresso_core_version = '3.1.1'
+    spek_framework_version = "2.0.4"
+    abp_threeten_jvm_version = '1.3.3'
 
     testDependencies = [
-            junit       : "junit:junit:$junit_version",
-            runner      : "androidx.test:runner:$runner_version",
-            espressoCore: "androidx.test.espresso:espresso-core:$espresso_core_version"
+            junit        : "junit:junit:$junit_version",
+            runner       : "androidx.test:runner:$runner_version",
+            espressoCore : "androidx.test.espresso:espresso-core:$espresso_core_version",
+            spekFramework: "org.spekframework.spek2:spek-dsl-jvm:$spek_framework_version",
+            abpThreeten  : "org.threeten:threetenbp:$abp_threeten_version"
     ]
 
 }

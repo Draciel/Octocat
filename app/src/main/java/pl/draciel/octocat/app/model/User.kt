@@ -9,7 +9,7 @@ data class User(
     val company: String?,
     val location: String?,
     val email: String?,
-    val id: String,
+    val id: Long,
     val url: String,
     val repoUrl: String?,
     val createdAt: LocalDateTime,

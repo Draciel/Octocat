@@ -1,22 +1,28 @@
-package pl.draciel.octocat.github.api
+package pl.draciel.octocat.github
 
 import io.reactivex.Observable
 import io.reactivex.Single
 import pl.draciel.octocat.app.model.CodeRepository
 import pl.draciel.octocat.app.model.User
-import pl.draciel.octocat.github.model.GithubCodeRepository
-import pl.draciel.octocat.github.model.GithubUser
+import pl.draciel.octocat.core.utility.ResponseTransformers
+import pl.draciel.octocat.github.api.GithubService
+import pl.draciel.octocat.github.api.model.GithubCodeRepository
+import pl.draciel.octocat.github.api.model.GithubUser
+import java.net.HttpURLConnection
 
-internal class GithubRepositoryImpl(private val githubService: GithubService) : GithubRepository {
+internal class GithubRepositoryImpl(private val githubService: GithubService) :
+    GithubRepository {
 
-    override fun getUser(user: String): Single<User> {
+    override fun requestUser(user: String): Single<User> {
         return githubService.getUser(user)
-            .map { mapUser(it.body()!!) }
+                .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))
+                .map { mapUser(it.body()!!) }
     }
 
-    override fun getCodeRepositories(user: String): Observable<CodeRepository> {
+    override fun requestCodeRepositories(user: String): Observable<CodeRepository> {
         return githubService.getUserRepositories(user)
-            .map { mapCodeRepository(it.body()!!) }
+                .compose(ResponseTransformers.httpStatusObservable(HttpURLConnection.HTTP_NOT_FOUND))
+                .map { mapCodeRepository(it.body()!!) }
     }
 
     companion object {
@@ -45,7 +51,8 @@ internal class GithubRepositoryImpl(private val githubService: GithubService) : 
                 codeRepository.pushedAt,
                 codeRepository.language,
                 codeRepository.watchers,
-                codeRepository.forks
+                codeRepository.forks,
+                codeRepository.id
             )
         }
     }

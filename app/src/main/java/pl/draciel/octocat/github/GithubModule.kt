@@ -4,8 +4,6 @@ import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
-import pl.draciel.octocat.github.api.GithubRepository
-import pl.draciel.octocat.github.api.GithubRepositoryImpl
 import pl.draciel.octocat.github.api.GithubService
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -15,7 +13,7 @@ import javax.inject.Singleton
 const val API_GITHUB_BASE = "https://api.github.com/"
 
 @Module
-object GithubModule {
+internal object GithubModule {
 
     @Provides
     @Singleton
@@ -30,11 +28,19 @@ object GithubModule {
     @JvmStatic
     internal fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(API_GITHUB_BASE)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(okHttpClient)
-            .build()
+                .baseUrl(API_GITHUB_BASE)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(okHttpClient)
+                .build()
+    }
+
+    /**
+     * Used mainly in unit/integration tests.
+     */
+    @JvmStatic
+    fun provideInMemoryGithubRepository(): GithubRepository {
+        return GithubRepositoryImpl(InMemoryGithubService())
     }
 
 }

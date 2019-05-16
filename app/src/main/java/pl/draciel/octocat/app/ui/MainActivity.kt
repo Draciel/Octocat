@@ -1,4 +1,4 @@
-package pl.draciel.octocat
+package pl.draciel.octocat.app.ui
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -8,6 +8,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import pl.draciel.octocat.GithubApp
+import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.User
 import pl.draciel.octocat.core.di.components.ActivityComponent
 import pl.draciel.octocat.core.di.components.DaggerActivityComponent
@@ -25,16 +27,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textMessage: TextView
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
-            R.id.navigation_home -> {
-                textMessage.setText(R.string.title_home)
+            R.id.navigation_search -> {
+                textMessage.setText(R.string.navigation_title_search)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.navigation_dashboard -> {
-                textMessage.setText(R.string.title_dashboard)
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_notifications -> {
-                textMessage.setText(R.string.title_notifications)
+            R.id.navigation_favourites -> {
+                textMessage.setText(R.string.navigation_title_favourites)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -52,17 +50,17 @@ class MainActivity : AppCompatActivity() {
 
         compositeDisposable.add(
             githubRepository.requestUser("Draciel")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<User>() {
-                    override fun onSuccess(t: User) {
-                        Timber.d("User %s", t)
-                    }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableSingleObserver<User>() {
+                        override fun onSuccess(t: User) {
+                            Timber.d("User %s", t)
+                        }
 
-                    override fun onError(e: Throwable) {
-                        Timber.e(e)
-                    }
-                })
+                        override fun onError(e: Throwable) {
+                            Timber.e(e)
+                        }
+                    })
         )
     }
 
@@ -73,8 +71,8 @@ class MainActivity : AppCompatActivity() {
 
     fun buildComponent(): ActivityComponent {
         return DaggerActivityComponent.builder()
-            .appComponent(GithubApp.getApplication(this).appComponent)
-            .build()
+                .appComponent(GithubApp.getApplication(this).appComponent)
+                .build()
     }
 
 }

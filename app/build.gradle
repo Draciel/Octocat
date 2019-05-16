@@ -54,6 +54,8 @@ dependencies {
     implementation appDependencies.okHttp
     implementation appDependencies.okio
     implementation appDependencies.abpThreeten
+    implementation appDependencies.navigationFragment
+    implementation appDependencies.navigationUiKtx
 
     testImplementation testDependencies.spekFramework
     testImplementation testDependencies.junit

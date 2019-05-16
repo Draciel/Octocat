@@ -27,6 +27,7 @@ ext {
     okhttp_version = "4.0.0-alpha01"
     okio_version = "2.2.2"
     abp_threeten_version = "1.2.0"
+    navigation_version = "2.1.0-alpha04"
 
     appDependencies = [
             dagger2               : "com.google.dagger:dagger:$dagger2_version",
@@ -49,7 +50,9 @@ ext {
             loggingInterceptor    : "com.squareup.okhttp3:logging-interceptor:$okhttp_logging_interceptor_version",
             okHttp                : "com.squareup.okhttp3:okhttp:$okhttp_version",
             okio                  : "com.squareup.okio:okio:$okio_version",
-            abpThreeten           : "com.jakewharton.threetenabp:threetenabp:$abp_threeten_version"
+            abpThreeten           : "com.jakewharton.threetenabp:threetenabp:$abp_threeten_version",
+            navigationFragment    : "androidx.navigation:navigation-fragment-ktx:$navigation_version",
+            navigationUiKtx       : "androidx.navigation:navigation-ui-ktx:$navigation_version"
     ]
 
     junit_version = '4.12'

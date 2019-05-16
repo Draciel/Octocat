@@ -4,10 +4,13 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_main.*
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.User
@@ -24,15 +27,16 @@ class MainActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    private lateinit var textMessage: TextView
+    private val navController: NavController by lazy { findNavController(R.id.nav_host_fragment) }
+
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_search -> {
-                textMessage.setText(R.string.navigation_title_search)
+                navController.navigate(R.id.search_fragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_favourites -> {
-                textMessage.setText(R.string.navigation_title_favourites)
+                navController.navigate(R.id.favourites_fragment)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -45,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         buildComponent().inject(this)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        textMessage = findViewById(R.id.message)
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
         compositeDisposable.add(

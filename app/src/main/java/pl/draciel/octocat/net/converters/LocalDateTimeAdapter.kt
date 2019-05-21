@@ -8,7 +8,7 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 import java.lang.reflect.Type
 
-class LocalDateTimeAdapter : JsonDeserializer<LocalDateTime?> {
+internal class LocalDateTimeAdapter : JsonDeserializer<LocalDateTime?> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): LocalDateTime? {
         if (json == null) {
             return null

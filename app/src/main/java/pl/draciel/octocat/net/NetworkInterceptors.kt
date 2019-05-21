@@ -6,4 +6,4 @@ import kotlin.annotation.AnnotationTarget.*
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 @Target(FIELD, VALUE_PARAMETER, FUNCTION, PROPERTY_GETTER, PROPERTY_SETTER)
-annotation class NetworkInterceptors
+internal annotation class NetworkInterceptors

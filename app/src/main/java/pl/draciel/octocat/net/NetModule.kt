@@ -28,7 +28,7 @@ object NetModule {
     @Singleton
     @Provides
     @AppInterceptors
-    fun provideAppInterceptors(): List<Interceptor> {
+    internal fun provideAppInterceptors(): List<Interceptor> {
         if (!BuildConfig.DEBUG) {
             return emptyList()
         }
@@ -42,7 +42,7 @@ object NetModule {
     @Singleton
     @Provides
     @NetworkInterceptors
-    fun provideNetworkInterceptors(): List<Interceptor> = emptyList()
+    internal fun provideNetworkInterceptors(): List<Interceptor> = emptyList()
 
     @JvmStatic
     @Provides

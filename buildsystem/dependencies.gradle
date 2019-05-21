@@ -28,6 +28,8 @@ ext {
     okio_version = "2.2.2"
     abp_threeten_version = "1.2.0"
     navigation_version = "2.1.0-alpha04"
+    butterknife_version = "10.1.0"
+    butterknife_compiler_version = butterknife_version
 
     appDependencies = [
             dagger2               : "com.google.dagger:dagger:$dagger2_version",
@@ -52,7 +54,9 @@ ext {
             okio                  : "com.squareup.okio:okio:$okio_version",
             abpThreeten           : "com.jakewharton.threetenabp:threetenabp:$abp_threeten_version",
             navigationFragment    : "androidx.navigation:navigation-fragment-ktx:$navigation_version",
-            navigationUiKtx       : "androidx.navigation:navigation-ui-ktx:$navigation_version"
+            navigationUiKtx       : "androidx.navigation:navigation-ui-ktx:$navigation_version",
+            butterknife           : "com.jakewharton:butterknife:$butterknife_version",
+            butterknifeCompiler   : "com.jakewharton:butterknife-compiler:$butterknife_compiler_version"
     ]
 
     junit_version = '4.12'

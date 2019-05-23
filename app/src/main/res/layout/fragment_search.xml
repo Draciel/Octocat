@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              android:orientation="vertical"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <include layout="@layout/layout_toolbar"/>
+    <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent"
+                                                     android:layout_height="?actionBarSize"
+                                                     app:layout_constraintTop_toTopOf="parent"
+                                                     app:layout_constraintEnd_toEndOf="parent"
+                                                     app:layout_constraintStart_toStartOf="parent">
+
+        <FrameLayout android:layout_width="match_parent"
+                     android:focusableInTouchMode="true"
+                     android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search"
+                    app:queryHint="@string/search_people"
+                    android:background="@drawable/search_view_background"
+                    android:layout_width="match_parent"
+                    app:queryBackground="@color/white"
+                    android:layout_marginStart="@dimen/search_edit_text_margin_horizontal"
+                    android:layout_marginEnd="@dimen/search_edit_text_margin_horizontal"
+                    android:layout_gravity="center"
+                    app:iconifiedByDefault="false"
+                    android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
             android:id="@+id/message"

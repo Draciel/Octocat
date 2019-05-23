@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -29,8 +30,8 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     @ComputationScheduler
     lateinit var computationScheduler: Scheduler
 
-    @BindView(R.id.toolbar)
-    lateinit var toolbar: Toolbar
+    @BindView(R.id.search)
+    lateinit var searchView: SearchView
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -48,7 +49,6 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar.title = "Search"
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

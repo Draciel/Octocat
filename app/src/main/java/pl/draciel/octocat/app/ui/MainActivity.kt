@@ -15,13 +15,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.User
+import pl.draciel.octocat.core.di.base.BaseActivity
 import pl.draciel.octocat.core.di.components.ActivityComponent
 import pl.draciel.octocat.core.di.components.DaggerActivityComponent
 import pl.draciel.octocat.github.GithubRepository
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityComponent>() {
 
     @Inject
     lateinit var githubRepository: GithubRepository
@@ -47,27 +48,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-//        setupActionBarWithNavController(navController, )
         buildComponent().inject(this)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
-
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-
-        compositeDisposable.add(
-            githubRepository.requestUser("Draciel")
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(object : DisposableSingleObserver<User>() {
-                        override fun onSuccess(t: User) {
-                            Timber.d("User %s", t)
-                        }
-
-                        override fun onError(e: Throwable) {
-                            Timber.e(e)
-                        }
-                    })
-        )
     }
 
     override fun onStop() {
@@ -75,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         compositeDisposable.clear()
     }
 
-    fun buildComponent(): ActivityComponent {
+    override fun buildComponent(): ActivityComponent {
         return DaggerActivityComponent.builder()
                 .appComponent(GithubApp.getApplication(this).appComponent)
                 .build()

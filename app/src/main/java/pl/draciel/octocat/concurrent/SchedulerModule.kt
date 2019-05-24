@@ -19,8 +19,8 @@ object SchedulerModule {
     @Provides
     @Singleton
     @JvmStatic
-    @UiScheduler
-    fun provideUiScheduler(): Scheduler = AndroidSchedulers.mainThread()
+    @MainThreadScheduler
+    fun provideMainThreadScheduler(): Scheduler = AndroidSchedulers.mainThread()
 
     @Provides
     @Singleton

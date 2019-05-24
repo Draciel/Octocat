@@ -4,7 +4,7 @@ import dagger.Component
 import io.reactivex.Scheduler
 import pl.draciel.octocat.concurrent.ComputationScheduler
 import pl.draciel.octocat.concurrent.SchedulerModule
-import pl.draciel.octocat.concurrent.UiScheduler
+import pl.draciel.octocat.concurrent.MainThreadScheduler
 import pl.draciel.octocat.core.di.modules.AppModule
 import pl.draciel.octocat.github.GithubModule
 import pl.draciel.octocat.github.GithubRepository
@@ -17,7 +17,7 @@ interface AppComponent {
 
     fun githubRepository(): GithubRepository
 
-    @UiScheduler
+    @MainThreadScheduler
     fun uiScheduler(): Scheduler
 
     @ComputationScheduler

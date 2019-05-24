@@ -3,6 +3,7 @@ package pl.draciel.octocat.core.utility
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import androidx.appcompat.widget.SearchView
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposables
 

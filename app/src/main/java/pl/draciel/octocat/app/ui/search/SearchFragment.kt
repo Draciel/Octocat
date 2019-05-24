@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import butterknife.BindView
 import butterknife.ButterKnife
+import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.annotations.CheckReturnValue
+import io.reactivex.annotations.SchedulerSupport
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
 import pl.draciel.octocat.concurrent.ComputationScheduler
-import pl.draciel.octocat.concurrent.UiScheduler
+import pl.draciel.octocat.concurrent.MainThreadScheduler
+import pl.draciel.octocat.concurrent.SchedulerSupportExtension
 import pl.draciel.octocat.core.di.base.BaseFragment
 import javax.inject.Inject
 
@@ -23,7 +25,7 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     lateinit var searchPresenter: SearchMVP.Presenter
 
     @Inject
-    @UiScheduler
+    @MainThreadScheduler
     lateinit var uiScheduler: Scheduler
 
     @Inject
@@ -33,12 +35,11 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     @BindView(R.id.search)
     lateinit var searchView: SearchView
 
-    private val compositeDisposable = CompositeDisposable()
+    private var rxSearchQueryListener: RxSearchQueryListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         buildComponent().inject(this)
-        searchPresenter.attachView(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,8 +48,38 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
         return view
     }
 
+    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupportExtension.MAIN_THREAD_SCHEDULER)
+    override fun observeOnSearchChanged(): Observable<String> {
+        if (rxSearchQueryListener == null) {
+            rxSearchQueryListener = RxSearchQueryListener()
+            searchView.setOnQueryTextListener(rxSearchQueryListener)
+        }
+        return rxSearchQueryListener!!.observeOnTextChanged()
+                .doOnDispose { disposeRxSearchQueryListener() }
+    }
+
+    @CheckReturnValue
+    @SchedulerSupport(SchedulerSupportExtension.MAIN_THREAD_SCHEDULER)
+    override fun observeOnSearchSubmit(): Observable<String> {
+        if (rxSearchQueryListener == null) {
+            rxSearchQueryListener = RxSearchQueryListener()
+            searchView.setOnQueryTextListener(rxSearchQueryListener)
+        }
+        return rxSearchQueryListener!!.observeOnTextSubmit()
+                .doOnDispose { disposeRxSearchQueryListener() }
+    }
+
+    private fun disposeRxSearchQueryListener() {
+        if (rxSearchQueryListener != null) {
+            searchView.setOnQueryTextListener(null)
+            rxSearchQueryListener = null
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        searchPresenter.attachView(this)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -56,7 +87,6 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     }
 
     override fun onDestroy() {
-        compositeDisposable.dispose()
         super.onDestroy()
     }
 

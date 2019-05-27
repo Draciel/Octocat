@@ -16,4 +16,6 @@ abstract class BaseLifecyclePresenter<T : BaseView> : LifecyclePresenter<T> {
         this.view = null
     }
 
+    override fun isViewAttached(): Boolean = this.view != null
+
 }

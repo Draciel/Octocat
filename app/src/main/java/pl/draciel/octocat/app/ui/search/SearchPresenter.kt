@@ -38,7 +38,7 @@ internal class SearchPresenter(
                     .observeOn(uiScheduler)
                     .subscribeBy(
                         onError = { Timber.e(it) },
-                        onNext = { it.forEach { u -> Timber.d("User %s", u.login) } }
+                        onNext = { view.updateResults(it) }
                     )
         )
     }

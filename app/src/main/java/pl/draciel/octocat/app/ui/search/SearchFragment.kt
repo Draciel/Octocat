@@ -5,18 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.annotations.CheckReturnValue
 import io.reactivex.annotations.SchedulerSupport
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
-import pl.draciel.octocat.concurrent.ComputationScheduler
-import pl.draciel.octocat.concurrent.MainThreadScheduler
+import pl.draciel.octocat.app.model.User
+import pl.draciel.octocat.app.ui.search.list.OnUserClickListener
+import pl.draciel.octocat.app.ui.search.list.SearchUserRecyclerDelegate
+import pl.draciel.octocat.app.ui.search.list.SearchUserRecyclerViewAdapter
 import pl.draciel.octocat.concurrent.SchedulerSupportExtension
+import pl.draciel.octocat.core.adapters.SingleTypeDelegateManager
 import pl.draciel.octocat.core.di.base.BaseFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View {
@@ -24,18 +31,22 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     @Inject
     lateinit var searchPresenter: SearchMVP.Presenter
 
-    @Inject
-    @MainThreadScheduler
-    lateinit var uiScheduler: Scheduler
-
-    @Inject
-    @ComputationScheduler
-    lateinit var computationScheduler: Scheduler
-
     @BindView(R.id.search)
     lateinit var searchView: SearchView
 
+    @BindView(R.id.search_recycler_view)
+    lateinit var searchResultRecyclerView: RecyclerView
+
+    private val onUserClickListener: OnUserClickListener = {
+        Timber.d("User %s", it)
+    }
+
+    private lateinit var searchAdapter: SearchUserRecyclerViewAdapter
+    private lateinit var searchUserRecyclerDelegate: SearchUserRecyclerDelegate
+
     private var rxSearchQueryListener: RxSearchQueryListener? = null
+
+    private val navController: NavController by lazy { findNavController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,16 +89,37 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        if (!this::searchAdapter.isInitialized) {
+            searchUserRecyclerDelegate = SearchUserRecyclerDelegate()
+            searchAdapter = SearchUserRecyclerViewAdapter(SingleTypeDelegateManager(searchUserRecyclerDelegate))
+        }
+        searchUserRecyclerDelegate.onUserClickListener = onUserClickListener
+        searchResultRecyclerView.adapter = searchAdapter
+        searchResultRecyclerView.layoutManager = LinearLayoutManager(context)
         searchPresenter.attachView(this)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun updateResults(users: List<User>) {
+        searchAdapter.setUsers(users)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        searchPresenter.detachView()
+        searchUserRecyclerDelegate.onUserClickListener = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!searchPresenter.isViewAttached()) {
+            searchUserRecyclerDelegate.onUserClickListener = onUserClickListener
+            searchPresenter.attachView(this)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        searchPresenter.destroy()
     }
 
     // At the time we build component, context will be ready

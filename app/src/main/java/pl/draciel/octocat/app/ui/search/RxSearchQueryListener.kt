@@ -8,7 +8,7 @@ import io.reactivex.subjects.PublishSubject
 import io.reactivex.subjects.Subject
 import pl.draciel.octocat.concurrent.SchedulerSupportExtension
 
-class RxSearchQueryListener : SearchView.OnQueryTextListener {
+internal class RxSearchQueryListener : SearchView.OnQueryTextListener {
 
     private val onTextChanged: Subject<String> = PublishSubject.create()
     private val onTextSubmit: Subject<String> = PublishSubject.create()
@@ -41,9 +41,9 @@ class RxSearchQueryListener : SearchView.OnQueryTextListener {
 
     @CheckReturnValue
     @SchedulerSupport(SchedulerSupportExtension.MAIN_THREAD_SCHEDULER)
-    fun observeOnTextChanged(): Observable<String> = onTextChanged
+    fun observeOnTextChanged(): Observable<String> = onTextChanged.distinctUntilChanged()
 
     @CheckReturnValue
     @SchedulerSupport(SchedulerSupportExtension.MAIN_THREAD_SCHEDULER)
-    fun observeOnTextSubmit(): Observable<String> = onTextSubmit
+    fun observeOnTextSubmit(): Observable<String> = onTextSubmit.distinctUntilChanged()
 }

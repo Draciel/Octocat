@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/nav_graph" app:startDestination="@id/search_fragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/search_fragment">
 
-    <fragment android:id="@+id/search_fragment"
-              android:name="pl.draciel.octocat.app.ui.search.SearchFragment"
-              android:label="SearchFragment">
-        <action android:id="@+id/action_searchFragment_to_userFragment" app:destination="@id/userFragment"/>
-        <action android:id="@+id/action_search_fragment_to_favourites_fragment"
-                app:destination="@id/favourites_fragment"/>
+    <fragment
+        android:id="@+id/search_fragment"
+        android:name="pl.draciel.octocat.app.ui.search.SearchFragment"
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/action_searchFragment_to_userFragment"
+            app:destination="@id/user_fragment" />
+        <action
+            android:id="@+id/action_search_fragment_to_favourites_fragment"
+            app:destination="@id/favourites_fragment" />
     </fragment>
 
-    <fragment android:id="@+id/userFragment"/>
+    <fragment
+        android:id="@+id/user_fragment"
+        android:name="pl.draciel.octocat.app.ui.userdetails.UserDetailsFragment"
+        android:label="UserDetailsFragment">
+        <action
+            android:id="@+id/action_userFragment_to_userFragment"
+            app:destination="@id/user_fragment" />
+    </fragment>
 
-    <fragment android:id="@+id/favourites_fragment"
-              android:name="pl.draciel.octocat.app.ui.favourites.FavouritesFragment"
-              android:label="FavouritesFragment"
-    />
+    <fragment
+        android:id="@+id/favourites_fragment"
+        android:name="pl.draciel.octocat.app.ui.favourites.FavouritesFragment"
+        android:label="FavouritesFragment" />
 </navigation>

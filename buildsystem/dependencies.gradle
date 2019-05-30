@@ -30,6 +30,7 @@ ext {
     navigation_version = "2.1.0-alpha04"
     butterknife_version = "10.1.0"
     butterknife_compiler_version = butterknife_version
+    leak_canary_version = "2.0-alpha-2"
 
     appDependencies = [
             dagger2               : "com.google.dagger:dagger:$dagger2_version",
@@ -56,7 +57,8 @@ ext {
             navigationFragment    : "androidx.navigation:navigation-fragment-ktx:$navigation_version",
             navigationUiKtx       : "androidx.navigation:navigation-ui-ktx:$navigation_version",
             butterknife           : "com.jakewharton:butterknife:$butterknife_version",
-            butterknifeCompiler   : "com.jakewharton:butterknife-compiler:$butterknife_compiler_version"
+            butterknifeCompiler   : "com.jakewharton:butterknife-compiler:$butterknife_compiler_version",
+            leakCanary            : "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
     ]
 
     junit_version = '4.12'

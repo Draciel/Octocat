@@ -58,6 +58,7 @@ dependencies {
     implementation appDependencies.navigationUiKtx
     implementation appDependencies.butterknife
     kapt appDependencies.butterknifeCompiler
+    debugImplementation appDependencies.leakCanary
 
     testImplementation testDependencies.spekFramework
     testImplementation testDependencies.junit

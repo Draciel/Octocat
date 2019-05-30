@@ -1,6 +1,5 @@
 package pl.draciel.octocat.github.api
 
-import io.reactivex.Observable
 import io.reactivex.Single
 import pl.draciel.octocat.github.api.model.*
 import retrofit2.Response
@@ -14,7 +13,16 @@ internal interface GithubService {
     fun getUser(@Path("user") userName: String): Single<Response<GithubUserDetails>>
 
     @GET("users/{user}/repos")
-    fun getUserRepositories(@Path("user") userName: String): Observable<Response<GithubCodeRepository>>
+    fun getUserRepositories(@Path("user") userName: String): Single<Response<List<GithubCodeRepository>>>
+
+    @GET("users/{user}/starred")
+    fun getUserStarredRepositories(@Path("user") userName: String): Single<Response<List<GithubCodeRepository>>>
+
+    @GET("users/{user}/following")
+    fun getUserFollowings(@Path("user") userName: String): Single<Response<List<GithubUser>>>
+
+    @GET("users/{user}/followers")
+    fun getUserFollowers(@Path("user") userName: String): Single<Response<List<GithubUser>>>
 
     @GET("search/users")
     fun searchUsers(

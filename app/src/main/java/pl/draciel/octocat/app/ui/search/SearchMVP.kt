@@ -13,8 +13,6 @@ internal interface SearchMVP {
         fun updateResults(users: List<User>)
     }
 
-    interface Presenter : LifecyclePresenter<View> {
-
-    }
+    interface Presenter : LifecyclePresenter<View>
 
 }

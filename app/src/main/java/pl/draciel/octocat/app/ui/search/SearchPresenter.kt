@@ -22,7 +22,6 @@ internal class SearchPresenter(
 
     override fun attachView(view: SearchMVP.View) {
         super.attachView(view)
-
         compositeDisposable.add(
             Observable.merge(
                 view.observeOnSearchChanged().debounce(400, TimeUnit.MILLISECONDS),
@@ -41,6 +40,11 @@ internal class SearchPresenter(
                         onNext = { view.updateResults(it) }
                     )
         )
+    }
+
+    override fun detachView() {
+        super.detachView()
+        compositeDisposable.clear()
     }
 
     override fun destroy() {

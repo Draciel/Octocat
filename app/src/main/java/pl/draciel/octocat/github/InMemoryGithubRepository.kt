@@ -1,19 +1,16 @@
 package pl.draciel.octocat.github
 
-import com.bumptech.glide.load.model.stream.HttpUriLoader
 import io.reactivex.Observable
 import io.reactivex.Single
 import okhttp3.MediaType
 import okhttp3.ResponseBody
+import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
-import org.threeten.bp.Month
-import pl.draciel.octocat.app.model.UserDetails
 import pl.draciel.octocat.core.utility.InMemoryCrudRepository
 import pl.draciel.octocat.github.api.GithubService
 import pl.draciel.octocat.github.api.model.*
 import retrofit2.Response
 import java.net.HttpURLConnection
-import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
 internal class InMemoryGithubService : GithubService {
@@ -25,7 +22,24 @@ internal class InMemoryGithubService : GithubService {
     init {
         userRepository.save(createUser("Draciel"))
         userRepository.save(createUser("Jake123"))
-        userDetailsRepository.save(GithubUserDetails("Draciel", 0))
+        userDetailsRepository.save(
+            createUserDetails(
+                "Draciel",
+                "Jake",
+                "",
+                "",
+                "",
+                "test@gmail.com",
+                false,
+                "Android Dev",
+                4,
+                5,
+                1,
+                2,
+                LocalDateTime.now().minusDays(2),
+                LocalDateTime.now()
+            )
+        )
     }
 
     override fun getUser(userName: String): Single<Response<GithubUserDetails>> {
@@ -51,8 +65,20 @@ internal class InMemoryGithubService : GithubService {
         TODO()
     }
 
-    override fun getUserRepositories(userName: String): Observable<Response<GithubCodeRepository>> {
+    override fun getUserRepositories(userName: String): Single<Response<List<GithubCodeRepository>>> {
         TODO()
+    }
+
+    override fun getUserStarredRepositories(userName: String): Single<Response<List<GithubCodeRepository>>> {
+        TODO("not implemented")
+    }
+
+    override fun getUserFollowings(userName: String): Single<Response<List<GithubUser>>> {
+        TODO("not implemented")
+    }
+
+    override fun getUserFollowers(userName: String): Single<Response<List<GithubUser>>> {
+        TODO("not implemented")
     }
 
     class InMemoryUserRepository : InMemoryCrudRepository<GithubUser>(
@@ -74,29 +100,72 @@ internal class InMemoryGithubService : GithubService {
     companion object {
         const val API_TEST_BASE = "api-test.com"
 
-        fun createUser(name: String): GithubUser {
+        fun createUser(nickname: String): GithubUser {
             return GithubUser(
-                name,
+                nickname,
                 0,
                 "",
-                "$API_TEST_BASE/users/$name/avatar",
-                "$API_TEST_BASE/users/$name/gravatar",
-                "$API_TEST_BASE/users/$name",
-                "$API_TEST_BASE/users/$name/html",
-                "$API_TEST_BASE/users/$name/followers",
-                "$API_TEST_BASE/users/$name/following",
-                "$API_TEST_BASE/users/$name/gists",
-                "$API_TEST_BASE/users/$name/starred",
-                "$API_TEST_BASE/users/$name/subscriptions",
-                "$API_TEST_BASE/users/$name/organizations",
-                "$API_TEST_BASE/users/$name/repos",
-                "$API_TEST_BASE/users/$name/events",
-                "$API_TEST_BASE/users/$name/receivedEvents",
+                "$API_TEST_BASE/users/$nickname/avatar",
+                "$API_TEST_BASE/users/$nickname/gravatar",
+                "$API_TEST_BASE/users/$nickname",
+                "$API_TEST_BASE/users/$nickname/html",
+                "$API_TEST_BASE/users/$nickname/followers",
+                "$API_TEST_BASE/users/$nickname/following",
+                "$API_TEST_BASE/users/$nickname/gists",
+                "$API_TEST_BASE/users/$nickname/starred",
+                "$API_TEST_BASE/users/$nickname/subscriptions",
+                "$API_TEST_BASE/users/$nickname/organizations",
+                "$API_TEST_BASE/users/$nickname/repos",
+                "$API_TEST_BASE/users/$nickname/events",
+                "$API_TEST_BASE/users/$nickname/receivedEvents",
                 "User",
                 false,
                 13.37
             )
         }
+
+        fun createUserDetails(
+            login: String, name: String, company: String, blog: String, location: String,
+            email: String, hireable: Boolean, bio: String, publicRepos: Int, publicGists: Int,
+            followers: Int, following: Int, createdAt: LocalDateTime, updatedAt: LocalDateTime
+        ): GithubUserDetails {
+            return GithubUserDetails(
+                login,
+                0,
+                "",
+                "$API_TEST_BASE/users/$login/avatar",
+                "$API_TEST_BASE/users/$login/gravatar",
+                "$API_TEST_BASE/users/$login",
+                "$API_TEST_BASE/users/$login/html",
+                "$API_TEST_BASE/users/$login/followers",
+                "$API_TEST_BASE/users/$login/following",
+                "$API_TEST_BASE/users/$login/gists",
+                "$API_TEST_BASE/users/$login/starred",
+                "$API_TEST_BASE/users/$login/subscriptions",
+                "$API_TEST_BASE/users/$login/organizations",
+                "$API_TEST_BASE/users/$login/repos",
+                "$API_TEST_BASE/users/$login/events",
+                "$API_TEST_BASE/users/$login/receivedEvents",
+                "User",
+                false,
+                name,
+                company,
+                blog,
+                location,
+                email,
+                hireable,
+                bio,
+                publicRepos,
+                publicGists,
+                followers,
+                following,
+                createdAt,
+                updatedAt
+            )
+
+
+        }
+
     }
 
 }

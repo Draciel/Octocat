@@ -10,35 +10,68 @@ import pl.draciel.octocat.github.api.GithubService
 import pl.draciel.octocat.github.api.model.GithubCodeRepository
 import pl.draciel.octocat.github.api.model.GithubUser
 import pl.draciel.octocat.github.api.model.GithubUserDetails
-import pl.draciel.octocat.github.api.model.SearchUserResponse
 import java.net.HttpURLConnection
 
 internal class GithubRepositoryImpl(private val githubService: GithubService) :
     GithubRepository {
 
-    override fun requestUser(user: String): Single<UserDetails> {
-        return githubService.getUser(user)
-                .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))
-                .map { mapUserDetails(it.body()!!) }
-    }
+    override fun requestUser(user: String): Single<UserDetails> = githubService.getUser(user)
+            .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))
+            .map { mapUserDetails(it.body()!!) }
 
-    override fun requestCodeRepositories(user: String): Observable<CodeRepository> {
-        return githubService.getUserRepositories(user)
-                .compose(ResponseTransformers.httpStatusObservable(HttpURLConnection.HTTP_NOT_FOUND))
-                .map { mapCodeRepository(it.body()!!) }
-    }
-
-    override fun searchUsers(keyword: String): Observable<User> {
-        return githubService.searchUsers(keyword)
+    override fun requestUserCodeRepositories(user: String): Observable<CodeRepository> =
+        githubService.getUserRepositories(user)
                 .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))
                 .flatMapObservable {
                     if (it.body() != null) {
-                        return@flatMapObservable Observable.fromIterable((it.body() as SearchUserResponse).users)
+                        return@flatMapObservable Observable.fromIterable(it.body())
+                    }
+                    return@flatMapObservable Observable.empty<GithubCodeRepository>()
+                }
+                .map { mapCodeRepository(it) }
+
+    override fun searchUsers(keyword: String): Observable<User> = githubService.searchUsers(keyword)
+            .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))
+            .flatMapObservable {
+                if (it.body() != null) {
+                    return@flatMapObservable Observable.fromIterable((it.body())!!.users)
+                }
+                return@flatMapObservable Observable.empty<GithubUser>()
+            }
+            .map { mapUser(it) }
+
+    override fun requestUserStarredCodeRepositories(user: String): Observable<CodeRepository> =
+        githubService.getUserStarredRepositories(user)
+                .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))
+                .flatMapObservable {
+                    if (it.body() != null) {
+                        return@flatMapObservable Observable.fromIterable(it.body())
+                    }
+                    return@flatMapObservable Observable.empty<GithubCodeRepository>()
+                }
+                .map { mapCodeRepository(it) }
+
+    override fun requestUserFollowers(user: String): Observable<User> =
+        githubService.getUserFollowers(user)
+                .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))
+                .flatMapObservable {
+                    if (it.body() != null) {
+                        return@flatMapObservable Observable.fromIterable(it.body())
                     }
                     return@flatMapObservable Observable.empty<GithubUser>()
                 }
                 .map { mapUser(it) }
-    }
+
+    override fun requestUserFollowing(user: String): Observable<User> =
+        githubService.getUserFollowings(user)
+                .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))
+                .flatMapObservable {
+                    if (it.body() != null) {
+                        return@flatMapObservable Observable.fromIterable(it.body())
+                    }
+                    return@flatMapObservable Observable.empty<GithubUser>()
+                }
+                .map { mapUser(it) }
 
     companion object {
         @JvmStatic
@@ -55,20 +88,38 @@ internal class GithubRepositoryImpl(private val githubService: GithubService) :
         @JvmStatic
         fun mapCodeRepository(codeRepository: GithubCodeRepository): CodeRepository {
             return CodeRepository(
-                codeRepository.repositoryName,
+                codeRepository.name,
                 codeRepository.url,
                 codeRepository.description,
                 codeRepository.pushedAt,
                 codeRepository.language,
                 codeRepository.watchers,
                 codeRepository.forks,
+                codeRepository.stargazersCount,
                 codeRepository.id
             )
         }
 
         @JvmStatic
         fun mapUserDetails(githubUserDetails: GithubUserDetails): UserDetails {
-            return UserDetails(githubUserDetails.login)
+            return UserDetails(
+                githubUserDetails.avatarUrl,
+                githubUserDetails.login,
+                githubUserDetails.nodeId,
+                githubUserDetails.type,
+                githubUserDetails.name,
+                githubUserDetails.company,
+                githubUserDetails.blog,
+                githubUserDetails.location,
+                githubUserDetails.bio,
+                githubUserDetails.email,
+                githubUserDetails.publicRepos,
+                githubUserDetails.publicGists,
+                githubUserDetails.followers,
+                githubUserDetails.following,
+                githubUserDetails.createdAt,
+                githubUserDetails.updatedAt
+            )
         }
     }
 }

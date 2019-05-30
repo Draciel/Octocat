@@ -9,7 +9,9 @@ abstract class BaseLifecyclePresenter<T : BaseView> : LifecyclePresenter<T> {
     }
 
     override fun destroy() {
-        detachView()
+        if (isViewAttached()) {
+            detachView()
+        }
     }
 
     override fun detachView() {

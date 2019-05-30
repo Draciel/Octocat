@@ -5,10 +5,11 @@ import org.threeten.bp.LocalDateTime
 data class CodeRepository(
     val repositoryName: String,
     val url: String,
-    val description: String,
+    val description: String?,
     val pushedAt: LocalDateTime,
-    val language: String,
+    val language: String?,
     val watchers: Int,
     val forks: Int,
+    val stars: Int,
     val id: Long
 )

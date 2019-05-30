@@ -20,10 +20,10 @@ import pl.draciel.octocat.app.model.User
 import pl.draciel.octocat.app.ui.search.list.OnUserClickListener
 import pl.draciel.octocat.app.ui.search.list.SearchUserRecyclerDelegate
 import pl.draciel.octocat.app.ui.search.list.SearchUserRecyclerViewAdapter
+import pl.draciel.octocat.app.ui.userdetails.EXTRA_USER_NAME
 import pl.draciel.octocat.concurrent.SchedulerSupportExtension
 import pl.draciel.octocat.core.adapters.SingleTypeDelegateManager
 import pl.draciel.octocat.core.di.base.BaseFragment
-import timber.log.Timber
 import javax.inject.Inject
 
 internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View {
@@ -38,7 +38,9 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     lateinit var searchResultRecyclerView: RecyclerView
 
     private val onUserClickListener: OnUserClickListener = {
-        Timber.d("User %s", it)
+        val bundle = Bundle()
+        bundle.putString(EXTRA_USER_NAME, it.login)
+        navController.navigate(R.id.user_fragment, bundle)
     }
 
     private lateinit var searchAdapter: SearchUserRecyclerViewAdapter
@@ -120,6 +122,8 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     override fun onDestroy() {
         super.onDestroy()
         searchPresenter.destroy()
+        searchResultRecyclerView.adapter = null
+        searchResultRecyclerView.layoutManager = null
     }
 
     // At the time we build component, context will be ready

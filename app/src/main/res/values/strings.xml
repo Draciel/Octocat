@@ -3,4 +3,9 @@
     <string name="navigation_title_search">Search</string>
     <string name="navigation_title_favourites">Favourites</string>
     <string name="search_users">Search users</string>
+    <string name="no_bio">No bio.</string>
+    <string name="code_repository">Repositories</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="starred">Starred</string>
 </resources>

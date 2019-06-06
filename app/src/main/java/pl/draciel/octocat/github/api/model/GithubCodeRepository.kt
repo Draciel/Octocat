@@ -16,7 +16,7 @@ internal data class GithubCodeRepository(
     @SerializedName("private")
     val isPrivate: Boolean,
     @SerializedName("owner")
-    val owner: User,
+    val owner: GithubUser,
     @SerializedName("html_url")
     val htmlUrl: String,
     @SerializedName("description")

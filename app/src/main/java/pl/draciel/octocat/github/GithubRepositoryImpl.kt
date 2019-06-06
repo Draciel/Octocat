@@ -63,7 +63,7 @@ internal class GithubRepositoryImpl(private val githubService: GithubService) :
                 .map { mapUser(it) }
 
     override fun requestUserFollowing(user: String): Observable<User> =
-        githubService.getUserFollowings(user)
+        githubService.getUserFollowing(user)
                 .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))
                 .flatMapObservable {
                     if (it.body() != null) {

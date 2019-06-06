@@ -26,7 +26,6 @@ interface GithubRepository {
     @SchedulerSupport(SchedulerSupport.NONE)
     fun requestUserFollowers(user: String): Observable<User>
 
-    //fixme find better name because it makes confusion
     @CheckReturnValue
     @SchedulerSupport(SchedulerSupport.NONE)
     fun requestUserFollowing(user: String): Observable<User>

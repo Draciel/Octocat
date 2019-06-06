@@ -19,7 +19,6 @@ class StarredFragment : PageListFragment<CodeRepository>() {
 
     private var starredRepositoryRecyclerDelegate: StarredRecyclerDelegate = StarredRecyclerDelegate()
 
-    // todo investigate if this is needed
     override fun onPageSelected() {
         if (loaded.compareAndSet(false, true)) {
             compositeDisposable.add(

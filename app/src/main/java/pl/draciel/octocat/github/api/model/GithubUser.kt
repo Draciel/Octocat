@@ -20,7 +20,7 @@ internal data class GithubUser(
     @SerializedName("repos_url") val reposUrl: String,
     @SerializedName("events_url") val eventsUrl: String,
     @SerializedName("received_events_url") val receivedEventsUrl: String,
-    val type: String, //fixme investigate if we can change this to enum
+    val type: String,
     @SerializedName("site_admin") val siteAdmin: Boolean,
     val score: Double
 )

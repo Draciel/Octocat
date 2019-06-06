@@ -9,6 +9,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.CodeRepository
+import pl.draciel.octocat.app.ui.search.DateTimeFormatters
 import pl.draciel.octocat.core.adapters.RecyclerDelegate
 
 typealias OnStarredClickListener = (starred: CodeRepository) -> Unit
@@ -23,14 +24,15 @@ class StarredRecyclerDelegate : RecyclerDelegate<CodeRepository, StarredRecycler
     }
 
     override fun bindViewHolder(viewHolder: ViewHolder, item: CodeRepository) {
+        val context = viewHolder.itemView.context
         viewHolder.name.text = item.repositoryName
         viewHolder.stars.text = item.stars.toString()
         viewHolder.description.text = item.description
         viewHolder.language.text = item.language
         viewHolder.forks.text = item.forks.toString()
 
-        //fixme extract to resources
-        viewHolder.lastUpdate.text = "Updated on ${item.pushedAt}"
+        val formattedDate = DateTimeFormatters.CODE_REPOSITORY_DATE_FORMATTER.format(item.pushedAt)
+        viewHolder.lastUpdate.text = context.getString(R.string.updated_on, formattedDate)
         viewHolder.itemView.setOnClickListener { onStarredClickListener?.invoke(item) }
     }
 

@@ -24,7 +24,6 @@ class CodeRepositoryFragment : PageListFragment<CodeRepository>() {
 
     private var codeRepositoryRecyclerDelegate: CodeRepositoryRecyclerDelegate = CodeRepositoryRecyclerDelegate()
 
-    // todo investigate if this is needed
     override fun onPageSelected() {
         if (loaded.compareAndSet(false, true)) {
             compositeDisposable.add(

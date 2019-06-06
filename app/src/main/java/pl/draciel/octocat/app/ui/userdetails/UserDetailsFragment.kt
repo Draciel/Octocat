@@ -165,14 +165,11 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
     }
 
     private fun <T : Any> attachOnClickListener(fragment: PageListFragment<T>) {
-        //fixme find more elegant solution
         when (fragment) {
-            is CodeRepositoryFragment, is StarredFragment -> (fragment as PageListFragment<CodeRepository>).setOnItemClickListener(
-                onCodeRepositoryClickListener!!
-            )
-            is FollowersFragment, is FollowingsFragment -> (fragment as PageListFragment<User>).setOnItemClickListener(
-                onUserClickListener!!
-            )
+            is CodeRepositoryFragment -> fragment.setOnItemClickListener(onCodeRepositoryClickListener)
+            is StarredFragment -> fragment.setOnItemClickListener(onCodeRepositoryClickListener)
+            is FollowersFragment -> fragment.setOnItemClickListener(onUserClickListener)
+            is FollowingsFragment -> fragment.setOnItemClickListener(onUserClickListener)
         }
     }
 

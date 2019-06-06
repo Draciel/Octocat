@@ -19,7 +19,7 @@ internal interface GithubService {
     fun getUserStarredRepositories(@Path("user") userName: String): Single<Response<List<GithubCodeRepository>>>
 
     @GET("users/{user}/following")
-    fun getUserFollowings(@Path("user") userName: String): Single<Response<List<GithubUser>>>
+    fun getUserFollowing(@Path("user") userName: String): Single<Response<List<GithubUser>>>
 
     @GET("users/{user}/followers")
     fun getUserFollowers(@Path("user") userName: String): Single<Response<List<GithubUser>>>

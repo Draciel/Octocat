@@ -15,8 +15,8 @@ class GithubApp : Application() {
 
     private fun createAppComponent(): AppComponent {
         return DaggerAppComponent.builder()
-            .appModule(AppModule(this))
-            .build()
+                .appModule(AppModule(this))
+                .build()
     }
 
     override fun onCreate() {

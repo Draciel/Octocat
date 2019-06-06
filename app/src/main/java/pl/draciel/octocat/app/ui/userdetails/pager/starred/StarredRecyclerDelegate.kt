@@ -3,15 +3,12 @@ package pl.draciel.octocat.app.ui.userdetails.pager.starred
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.bumptech.glide.Glide
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.CodeRepository
-import pl.draciel.octocat.core.adapters.ClearableViewHolder
 import pl.draciel.octocat.core.adapters.RecyclerDelegate
 
 typealias OnStarredClickListener = (starred: CodeRepository) -> Unit

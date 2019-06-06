@@ -8,37 +8,34 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.User
+import pl.draciel.octocat.app.ui.userdetails.pager.following.FollowingRecyclerDelegate.ViewHolder
 import pl.draciel.octocat.core.adapters.ClearableViewHolder
 import pl.draciel.octocat.core.adapters.RecyclerDelegate
+import pl.draciel.octocat.imageloader.ImageLoader
 
 typealias OnFollowingClickListener = (user: User) -> Unit
 
-class FollowingRecyclerDelegate : RecyclerDelegate<User, FollowingRecyclerDelegate.ViewHolder> {
+class FollowingRecyclerDelegate(private val imageLoader: ImageLoader) : RecyclerDelegate<User, ViewHolder> {
 
     var onFollowingClickListener: OnFollowingClickListener? = null
 
     override fun createViewHolder(parent: ViewGroup): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
-        return ViewHolder(itemView)
+        return ViewHolder(itemView, imageLoader)
     }
 
     override fun bindViewHolder(viewHolder: ViewHolder, item: User) {
         viewHolder.login.text = item.login
         viewHolder.itemView.setOnClickListener { onFollowingClickListener?.invoke(item) }
 
-//        fixme refactor it later
-        Glide.with(viewHolder.itemView)
-                .load(item.avatarUrl)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .fitCenter()
+        imageLoader.loadImage(item.avatarUrl)
                 .into(viewHolder.avatar)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), ClearableViewHolder {
+    class ViewHolder(itemView: View, private val imageLoader: ImageLoader) : RecyclerView.ViewHolder(itemView),
+        ClearableViewHolder {
 
         @BindView(R.id.login)
         lateinit var login: TextView
@@ -51,7 +48,7 @@ class FollowingRecyclerDelegate : RecyclerDelegate<User, FollowingRecyclerDelega
         }
 
         override fun clear() {
-            Glide.with(itemView).clear(avatar)
+            imageLoader.clear(avatar)
         }
     }
 

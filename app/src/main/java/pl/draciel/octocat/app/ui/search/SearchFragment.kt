@@ -24,6 +24,7 @@ import pl.draciel.octocat.app.ui.userdetails.EXTRA_USER_NAME
 import pl.draciel.octocat.concurrent.SchedulerSupportExtension
 import pl.draciel.octocat.core.adapters.SingleTypeDelegateManager
 import pl.draciel.octocat.core.di.base.BaseFragment
+import pl.draciel.octocat.imageloader.ImageLoader
 import javax.inject.Inject
 
 internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View {
@@ -36,6 +37,9 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
 
     @BindView(R.id.search_recycler_view)
     lateinit var searchResultRecyclerView: RecyclerView
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
 
     private val onUserClickListener: OnUserClickListener = {
         val bundle = Bundle()
@@ -92,7 +96,7 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!this::searchAdapter.isInitialized) {
-            searchUserRecyclerDelegate = SearchUserRecyclerDelegate()
+            searchUserRecyclerDelegate = SearchUserRecyclerDelegate(imageLoader)
             searchAdapter = SearchUserRecyclerViewAdapter(SingleTypeDelegateManager(searchUserRecyclerDelegate))
         }
         searchUserRecyclerDelegate.onUserClickListener = onUserClickListener

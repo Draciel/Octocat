@@ -8,6 +8,7 @@ import pl.draciel.octocat.concurrent.ComputationScheduler
 import pl.draciel.octocat.concurrent.MainThreadScheduler
 import pl.draciel.octocat.core.di.base.BaseFragment
 import pl.draciel.octocat.github.GithubRepository
+import pl.draciel.octocat.imageloader.ImageLoader
 import javax.inject.Inject
 
 /**
@@ -27,6 +28,9 @@ abstract class InjectingPageListFragment : BaseFragment<PageListComponent>() {
     @Inject
     @MainThreadScheduler
     protected lateinit var mainThreadScheduler: Scheduler
+
+    @Inject
+    protected lateinit var imageLoader: ImageLoader
 
     protected val compositeDisposable: CompositeDisposable = CompositeDisposable()
 

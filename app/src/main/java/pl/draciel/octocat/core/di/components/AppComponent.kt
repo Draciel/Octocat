@@ -8,11 +8,21 @@ import pl.draciel.octocat.concurrent.MainThreadScheduler
 import pl.draciel.octocat.core.di.modules.AppModule
 import pl.draciel.octocat.github.GithubModule
 import pl.draciel.octocat.github.GithubRepository
+import pl.draciel.octocat.imageloader.ImageLoader
+import pl.draciel.octocat.imageloader.ImageLoaderModule
 import pl.draciel.octocat.net.NetModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, NetModule::class, GithubModule::class, SchedulerModule::class])
+@Component(
+    modules = [
+        AppModule::class,
+        NetModule::class,
+        GithubModule::class,
+        SchedulerModule::class,
+        ImageLoaderModule::class
+    ]
+)
 interface AppComponent {
 
     fun githubRepository(): GithubRepository
@@ -22,5 +32,7 @@ interface AppComponent {
 
     @ComputationScheduler
     fun computationScheduler(): Scheduler
+
+    fun imageLoader(): ImageLoader
 
 }

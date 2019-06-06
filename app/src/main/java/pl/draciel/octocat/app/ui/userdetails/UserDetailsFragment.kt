@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
@@ -27,6 +26,7 @@ import pl.draciel.octocat.app.ui.userdetails.pager.followers.FollowersFragment
 import pl.draciel.octocat.app.ui.userdetails.pager.following.FollowingsFragment
 import pl.draciel.octocat.app.ui.userdetails.pager.starred.StarredFragment
 import pl.draciel.octocat.core.di.base.BaseFragment
+import pl.draciel.octocat.imageloader.ImageLoader
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -63,6 +63,9 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
 
     @BindView(R.id.tab_layout)
     lateinit var tabLayout: TabLayout
+
+    @Inject
+    lateinit var imageLoader: ImageLoader
 
     private lateinit var viewPagerAdapter: UserDetailsViewPagerAdapter
 
@@ -118,6 +121,7 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
     override fun onDestroyView() {
         viewPager.clearOnPageChangeListeners()
         viewPager.adapter = null
+        imageLoader.clear(avatar)
         super.onDestroyView()
     }
 
@@ -137,8 +141,7 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
     }
 
     override fun setUser(user: UserDetails) {
-        Glide.with(avatar)
-                .load(user.avatarUrl)
+        imageLoader.loadImage(user.avatarUrl)
                 .into(avatar)
         nameTextView.setTextAndShow(user.name)
         companyTextView.setTextAndShow(user.company)

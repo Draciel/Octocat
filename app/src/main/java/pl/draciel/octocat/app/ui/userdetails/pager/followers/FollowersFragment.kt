@@ -15,7 +15,7 @@ class FollowersFragment : PageListFragment<User>() {
 
     private val userName: String by lazy { arguments?.getString(EXTRA_USER_NAME) ?: "" }
 
-    private var followersRecyclerDelegate: FollowersRecyclerDelegate = FollowersRecyclerDelegate()
+    private val followersRecyclerDelegate: FollowersRecyclerDelegate by lazy { FollowersRecyclerDelegate(imageLoader) }
 
     // todo investigate if this is needed
     override fun onPageSelected() {

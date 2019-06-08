@@ -31,6 +31,9 @@ ext {
     butterknife_version = "10.1.0"
     butterknife_compiler_version = butterknife_version
     leak_canary_version = "2.0-alpha-2"
+    room_runtime_version = "2.1.0-alpha06"
+    room_compiler_version = room_runtime_version
+    room_rxjava2_version = room_runtime_version
 
     appDependencies = [
             dagger2               : "com.google.dagger:dagger:$dagger2_version",
@@ -58,7 +61,10 @@ ext {
             navigationUiKtx       : "androidx.navigation:navigation-ui-ktx:$navigation_version",
             butterknife           : "com.jakewharton:butterknife:$butterknife_version",
             butterknifeCompiler   : "com.jakewharton:butterknife-compiler:$butterknife_compiler_version",
-            leakCanary            : "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
+            leakCanary            : "com.squareup.leakcanary:leakcanary-android:$leak_canary_version",
+            roomRuntime           : "androidx.room:room-runtime:$room_runtime_version",
+            roomCompiler          : "androidx.room:room-compiler:$room_compiler_version",
+            roomRxjava2           : "androidx.room:room-rxjava2:$room_rxjava2_version"
     ]
 
     junit_version = '4.12'

@@ -6,6 +6,9 @@ import pl.draciel.octocat.concurrent.ComputationScheduler
 import pl.draciel.octocat.concurrent.SchedulerModule
 import pl.draciel.octocat.concurrent.MainThreadScheduler
 import pl.draciel.octocat.core.di.modules.AppModule
+import pl.draciel.octocat.database.DatabaseModule
+import pl.draciel.octocat.database.UserDao
+import pl.draciel.octocat.database.UserRepository
 import pl.draciel.octocat.github.GithubModule
 import pl.draciel.octocat.github.GithubRepository
 import pl.draciel.octocat.imageloader.ImageLoader
@@ -20,7 +23,8 @@ import javax.inject.Singleton
         NetModule::class,
         GithubModule::class,
         SchedulerModule::class,
-        ImageLoaderModule::class
+        ImageLoaderModule::class,
+        DatabaseModule::class
     ]
 )
 interface AppComponent {
@@ -34,5 +38,7 @@ interface AppComponent {
     fun computationScheduler(): Scheduler
 
     fun imageLoader(): ImageLoader
+
+    fun userRepository(): UserRepository
 
 }

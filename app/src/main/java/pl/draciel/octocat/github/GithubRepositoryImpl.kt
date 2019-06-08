@@ -103,6 +103,7 @@ internal class GithubRepositoryImpl(private val githubService: GithubService) :
         @JvmStatic
         fun mapUserDetails(githubUserDetails: GithubUserDetails): UserDetails {
             return UserDetails(
+                githubUserDetails.id,
                 githubUserDetails.avatarUrl,
                 githubUserDetails.login,
                 githubUserDetails.nodeId,

@@ -5,5 +5,5 @@ data class User(
     val id: Long,
     val type: String,
     val avatarUrl: String,
-    val score: Double
+    val score: Double //fixme this is redundant
 )

@@ -7,11 +7,14 @@ import pl.draciel.octocat.core.mvp.LifecyclePresenter
 interface UserDetailsMVP {
 
     interface View : BaseView {
-        fun setUser(user: UserDetails)
+        fun setUserDetails(user: UserDetails)
+        fun setFavouriteChecked(checked: Boolean)
     }
 
     interface Presenter : LifecyclePresenter<View> {
         fun loadUserDetails(login: String)
+        fun saveUserInFavourites(userDetails: UserDetails)
+        fun removeUserFromFavourites(userDetails: UserDetails)
     }
 
 }

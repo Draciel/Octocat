@@ -59,6 +59,9 @@ dependencies {
     implementation appDependencies.butterknife
     kapt appDependencies.butterknifeCompiler
     debugImplementation appDependencies.leakCanary
+    implementation appDependencies.roomRuntime
+    kapt appDependencies.roomCompiler
+    implementation appDependencies.roomRxjava2
 
     testImplementation testDependencies.spekFramework
     testImplementation testDependencies.junit

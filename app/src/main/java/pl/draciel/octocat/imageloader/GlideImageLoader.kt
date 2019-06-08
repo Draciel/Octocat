@@ -10,9 +10,6 @@ import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.CustomViewTarget
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.target.ViewTarget
 import pl.draciel.octocat.core.di.scopes.ApplicationContext
 
 class GlideImageLoader(@ApplicationContext private val appContext: Context) : ImageLoader {

@@ -2,6 +2,7 @@ package pl.draciel.octocat.app.ui.userdetails
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -13,6 +14,12 @@ import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.google.android.material.tabs.TabLayout
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import io.reactivex.annotations.CheckReturnValue
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposables
+import io.reactivex.rxkotlin.subscribeBy
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.CodeRepository
@@ -25,9 +32,11 @@ import pl.draciel.octocat.app.ui.userdetails.pager.coderepostiory.CodeRepository
 import pl.draciel.octocat.app.ui.userdetails.pager.followers.FollowersFragment
 import pl.draciel.octocat.app.ui.userdetails.pager.following.FollowingsFragment
 import pl.draciel.octocat.app.ui.userdetails.pager.starred.StarredFragment
+import pl.draciel.octocat.concurrent.MainThreadScheduler
 import pl.draciel.octocat.core.di.base.BaseFragment
 import pl.draciel.octocat.imageloader.ImageLoader
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 const val EXTRA_USER_NAME = "UserDetailsFragment::UserName"
@@ -67,9 +76,15 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
     @Inject
     lateinit var imageLoader: ImageLoader
 
+    @Inject
+    @MainThreadScheduler
+    lateinit var uiThreadScheduler: Scheduler
+
     private lateinit var viewPagerAdapter: UserDetailsViewPagerAdapter
 
     private val navController: NavController by lazy { findNavController() }
+
+    private var currentUser: UserDetails? = null
 
     private var onCodeRepositoryClickListener: OnItemClickListener<CodeRepository>? = {
         Timber.d("Clicked repository %s", it)
@@ -80,6 +95,8 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
         bundle.putString(EXTRA_USER_NAME, it.login)
         navController.navigate(R.id.user_fragment, bundle)
     }
+
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     @Inject
     lateinit var userDetailsPresenter: UserDetailsMVP.Presenter
@@ -110,18 +127,21 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
         if (!userDetailsPresenter.isViewAttached()) {
             userDetailsPresenter.attachView(this)
         }
+        observeOnMenuItemClick()
     }
 
     override fun onStop() {
         super.onStop()
         userDetailsPresenter.detachView()
         viewPagerAdapter.pages.forEach { it.setOnItemClickListener(null) }
+        compositeDisposable.clear()
     }
 
     override fun onDestroyView() {
         viewPager.clearOnPageChangeListeners()
         viewPager.adapter = null
         imageLoader.clear(avatar)
+        compositeDisposable.clear()
         super.onDestroyView()
     }
 
@@ -140,9 +160,9 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
         attachOnClickListener(fragment)
     }
 
-    override fun setUser(user: UserDetails) {
-        imageLoader.loadImage(user.avatarUrl)
-                .into(avatar)
+    override fun setUserDetails(user: UserDetails) {
+        currentUser = user
+        imageLoader.loadImage(user.avatarUrl).into(avatar)
         nameTextView.setTextAndShow(user.name)
         companyTextView.setTextAndShow(user.company)
         locationTextView.setTextAndShow(user.location)
@@ -155,6 +175,11 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
         }
         // Load first page
         onPageSelected(0)
+    }
+
+    override fun setFavouriteChecked(checked: Boolean) {
+        setupToolbar()
+        toolbar.menu.findItem(R.id.add_to_favourites).updateCheckedState(checked)
     }
 
     override fun buildComponent(): UserDetailsComponent {
@@ -171,6 +196,11 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
             is FollowersFragment -> fragment.setOnItemClickListener(onUserClickListener)
             is FollowingsFragment -> fragment.setOnItemClickListener(onUserClickListener)
         }
+    }
+
+    private fun setupToolbar() {
+        toolbar.inflateMenu(R.menu.user_details_toolbar_menu)
+        observeOnMenuItemClick()
     }
 
     private fun setupViewPager() {
@@ -192,11 +222,67 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
         viewPager.offscreenPageLimit = this.viewPagerAdapter.count
         tabLayout.setupWithViewPager(viewPager)
     }
+
+    private fun observeOnMenuItemClick() {
+        compositeDisposable.add(toolbar.observeOnMenuItemClick()
+                .doOnNext {
+                    when (it.itemId) {
+                        R.id.add_to_favourites -> {
+                            it.updateCheckedState(!it.isChecked)
+                        }
+                    }
+                }
+                .debounce(200, TimeUnit.MILLISECONDS)
+                .observeOn(uiThreadScheduler)
+                .subscribeBy(
+                    onNext = {
+                        when (it.itemId) {
+                            R.id.add_to_favourites -> {
+                                if (it.isChecked) {
+                                    userDetailsPresenter.saveUserInFavourites(currentUser!!)
+                                } else {
+                                    userDetailsPresenter.removeUserFromFavourites(currentUser!!)
+                                }
+                            }
+                            else -> throw IllegalArgumentException("Did you forget to register new menu id?")
+                        }
+                    },
+                    onError = { Timber.e(it) },
+                    onComplete = {}
+                ))
+    }
 }
 
 private fun TextView.setTextAndShow(text: String?) {
     if (!text.isNullOrBlank()) {
         this.text = text
         this.visibility = View.VISIBLE
+    }
+}
+
+private fun MenuItem.updateCheckedState(checked: Boolean) {
+    isChecked = checked
+    if (checked) {
+        setIcon(R.drawable.ic_favourite_24px)
+    } else {
+        setIcon(R.drawable.ic_favourite_border_24px)
+    }
+}
+
+@CheckReturnValue
+private fun Toolbar.observeOnMenuItemClick(): Observable<MenuItem> {
+    return Observable.create { emitter ->
+        val listener = Toolbar.OnMenuItemClickListener {
+            try {
+                emitter.onNext(it)
+            } catch (npe: NullPointerException) {
+                throw npe
+            } catch (ex: Exception) {
+                emitter.onError(ex)
+            }
+            false
+        }
+        setOnMenuItemClickListener(listener)
+        emitter.setDisposable(Disposables.fromAction { setOnMenuItemClickListener(null) })
     }
 }

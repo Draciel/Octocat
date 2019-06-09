@@ -28,5 +28,9 @@
     <fragment
         android:id="@+id/favourites_fragment"
         android:name="pl.draciel.octocat.app.ui.favourites.FavouritesFragment"
-        android:label="FavouritesFragment" />
+        android:label="FavouritesFragment" >
+        <action
+            android:id="@+id/action_favourites_fragment_to_user_fragment"
+            app:destination="@id/user_fragment" />
+    </fragment>
 </navigation>

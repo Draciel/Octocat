@@ -14,6 +14,6 @@ object DatabaseModule {
 
     @JvmStatic
     @Provides
-    fun provideUserRepository(database: OctocatDatabase): UserRepository = UserRepositoryImpl(database.userDao())
+    fun provideUserRepository(database: OctocatDatabase): FavouriteUserRepository = FavouriteUserRepositoryImpl(database.favouriteUserDao())
 
 }

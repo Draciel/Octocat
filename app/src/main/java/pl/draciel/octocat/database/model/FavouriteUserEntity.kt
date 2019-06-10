@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "users")
-class UserEntity(
+data class FavouriteUserEntity(
 
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = false)
@@ -20,7 +20,10 @@ class UserEntity(
     @ColumnInfo(name = "avatarUrl")
     val avatarUrl: String,
 
-    @ColumnInfo(name = "score")
-    val score: Double
+    @ColumnInfo(name = "company")
+    val company: String?,
+
+    @ColumnInfo(name = "bio")
+    val bio: String?
 
 )

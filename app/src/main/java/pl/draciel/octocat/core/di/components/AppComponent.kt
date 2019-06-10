@@ -7,8 +7,7 @@ import pl.draciel.octocat.concurrent.SchedulerModule
 import pl.draciel.octocat.concurrent.MainThreadScheduler
 import pl.draciel.octocat.core.di.modules.AppModule
 import pl.draciel.octocat.database.DatabaseModule
-import pl.draciel.octocat.database.UserDao
-import pl.draciel.octocat.database.UserRepository
+import pl.draciel.octocat.database.FavouriteUserRepository
 import pl.draciel.octocat.github.GithubModule
 import pl.draciel.octocat.github.GithubRepository
 import pl.draciel.octocat.imageloader.ImageLoader
@@ -39,6 +38,6 @@ interface AppComponent {
 
     fun imageLoader(): ImageLoader
 
-    fun userRepository(): UserRepository
+    fun userRepository(): FavouriteUserRepository
 
 }

@@ -80,6 +80,9 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
     @MainThreadScheduler
     lateinit var uiThreadScheduler: Scheduler
 
+    @Inject
+    lateinit var userDetailsPresenter: UserDetailsMVP.Presenter
+
     private lateinit var viewPagerAdapter: UserDetailsViewPagerAdapter
 
     private val navController: NavController by lazy { findNavController() }
@@ -97,9 +100,6 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
     }
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-
-    @Inject
-    lateinit var userDetailsPresenter: UserDetailsMVP.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

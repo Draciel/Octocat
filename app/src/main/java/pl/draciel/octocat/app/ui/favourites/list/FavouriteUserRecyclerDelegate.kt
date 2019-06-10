@@ -9,25 +9,32 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import pl.draciel.octocat.R
-import pl.draciel.octocat.app.model.User
+import pl.draciel.octocat.app.model.FavouriteUser
 import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerDelegate.ViewHolder
 import pl.draciel.octocat.core.adapters.ClearableViewHolder
 import pl.draciel.octocat.core.adapters.RecyclerDelegate
 import pl.draciel.octocat.imageloader.ImageLoader
 
-typealias OnUserClickListener = (user: User) -> Unit
+typealias OnUserClickListener = (user: FavouriteUser) -> Unit
 
-internal class FavouriteUserRecyclerDelegate(private val imageLoader: ImageLoader) : RecyclerDelegate<User, ViewHolder> {
+internal class FavouriteUserRecyclerDelegate(private val imageLoader: ImageLoader) :
+    RecyclerDelegate<FavouriteUser, ViewHolder> {
 
     var onUserClickListener: OnUserClickListener? = null
 
     override fun createViewHolder(parent: ViewGroup): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_favourite_user, parent, false)
         return ViewHolder(itemView, imageLoader)
     }
 
-    override fun bindViewHolder(viewHolder: ViewHolder, item: User) {
+    override fun bindViewHolder(viewHolder: ViewHolder, item: FavouriteUser) {
         viewHolder.login.text = item.login
+        if (item.bio == null) {
+            viewHolder.bio.setText(R.string.no_bio)
+        } else {
+            viewHolder.bio.text = item.bio
+        }
+        viewHolder.company.updateTextVisibility(item.company)
         viewHolder.itemView.setOnClickListener { onUserClickListener?.invoke(item) }
 
         imageLoader.loadImage(item.avatarUrl)
@@ -43,6 +50,12 @@ internal class FavouriteUserRecyclerDelegate(private val imageLoader: ImageLoade
         @BindView(R.id.avatar)
         lateinit var avatar: ImageView
 
+        @BindView(R.id.bio)
+        lateinit var bio: TextView
+
+        @BindView(R.id.company)
+        lateinit var company: TextView
+
         init {
             ButterKnife.bind(this, itemView)
         }
@@ -50,5 +63,15 @@ internal class FavouriteUserRecyclerDelegate(private val imageLoader: ImageLoade
         override fun clear() {
             imageLoader.clear(avatar)
         }
+    }
+}
+
+private fun TextView.updateTextVisibility(text: String?) {
+    if (!text.isNullOrBlank()) {
+        this.text = text
+        this.visibility = View.VISIBLE
+    } else {
+        this.text = ""
+        this.visibility = View.GONE
     }
 }

@@ -6,7 +6,7 @@ import io.reactivex.Scheduler
 import pl.draciel.octocat.concurrent.ComputationScheduler
 import pl.draciel.octocat.concurrent.MainThreadScheduler
 import pl.draciel.octocat.core.di.scopes.FragmentScope
-import pl.draciel.octocat.database.UserRepository
+import pl.draciel.octocat.database.FavouriteUserRepository
 
 @Module
 object FavouritesModule {
@@ -17,9 +17,9 @@ object FavouritesModule {
     internal fun provideFavourites(
         @MainThreadScheduler uiThreadScheduler: Scheduler,
         @ComputationScheduler backgroundScheduler: Scheduler,
-        userRepository: UserRepository
+        favouriteUserRepository: FavouriteUserRepository
     ): FavouritesMVP.Presenter {
-        return FavouritesPresenter(uiThreadScheduler, backgroundScheduler, userRepository)
+        return FavouritesPresenter(uiThreadScheduler, backgroundScheduler, favouriteUserRepository)
     }
 
 }

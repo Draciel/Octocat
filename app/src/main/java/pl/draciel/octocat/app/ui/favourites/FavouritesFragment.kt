@@ -13,6 +13,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
+import pl.draciel.octocat.app.model.FavouriteUser
 import pl.draciel.octocat.app.model.User
 import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerDelegate
 import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerViewAdapter
@@ -72,7 +73,7 @@ class FavouritesFragment : BaseFragment<FavouritesComponent>(), FavouritesMVP.Vi
         presenter.loadFavouriteUsers()
     }
 
-    override fun setUsers(users: List<User>) {
+    override fun setUsers(users: List<FavouriteUser>) {
         adapter.setUsers(users)
     }
 

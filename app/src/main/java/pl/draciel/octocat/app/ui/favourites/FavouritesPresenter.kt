@@ -4,19 +4,19 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import pl.draciel.octocat.core.mvp.BaseLifecyclePresenter
-import pl.draciel.octocat.database.UserRepository
+import pl.draciel.octocat.database.FavouriteUserRepository
 import timber.log.Timber
 
 class FavouritesPresenter(
     private val uiThreadScheduler: Scheduler,
     private val backgroundScheduler: Scheduler,
-    private val userRepository: UserRepository
+    private val favouriteUserRepository: FavouriteUserRepository
 ) : FavouritesMVP.Presenter, BaseLifecyclePresenter<FavouritesMVP.View>() {
 
     private val compositeDisposable = CompositeDisposable()
 
     override fun loadFavouriteUsers() {
-        compositeDisposable.add(userRepository.findAll()
+        compositeDisposable.add(favouriteUserRepository.findAll()
                 .subscribeOn(backgroundScheduler)
                 .observeOn(uiThreadScheduler)
                 .subscribeBy(

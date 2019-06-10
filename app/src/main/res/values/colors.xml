@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="blue_grey">#607D8B</color>
+    <color name="light_grey">#CFD8DC</color>
+    <color name="dark_grey">#455A64</color>
+    <color name="green">#4CAF50</color>
     <color name="white">#FFF</color>
-    <color name="search_view_background">@color/white</color>
     <color name="black">#000</color>
+    <color name="dark_amber">#FFA000</color>
+
+    <color name="primary">@color/blue_grey</color>
+    <color name="primary_light">@color/light_grey</color>
+    <color name="primary_dark">@color/dark_grey</color>
+    <color name="accent">@color/green</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="icons">@color/white</color>
+
+    <color name="search_view_background">@color/white</color>
 </resources>

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import androidx.annotation.StringRes
 import androidx.appcompat.widget.SearchView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -11,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Observable
 import io.reactivex.annotations.CheckReturnValue
 import io.reactivex.annotations.SchedulerSupport
+import kotlinx.android.synthetic.main.fragment_search.*
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.User
@@ -40,6 +44,9 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
 
     @Inject
     lateinit var imageLoader: ImageLoader
+
+    @BindView(R.id.progress_container)
+    lateinit var progressContainer: FrameLayout
 
     private val onUserClickListener: OnUserClickListener = {
         val bundle = Bundle()
@@ -103,6 +110,20 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
         searchResultRecyclerView.adapter = searchAdapter
         searchResultRecyclerView.layoutManager = LinearLayoutManager(context)
         searchPresenter.attachView(this)
+    }
+
+    override fun showProgress() {
+        progressContainer.visibility = View.VISIBLE
+        searchResultRecyclerView.visibility = View.INVISIBLE
+    }
+
+    override fun hideProgress() {
+        progressContainer.visibility = View.GONE
+        searchResultRecyclerView.visibility = View.VISIBLE
+    }
+
+    override fun showError(@StringRes message: Int) {
+        Snackbar.make(view!!, message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun updateResults(users: List<User>) {

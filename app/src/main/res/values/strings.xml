@@ -10,4 +10,6 @@
     <string name="starred">Starred</string>
     <string name="updated_on">Updated on %s</string>
     <string name="add_to_favourites">Add to favourites</string>
+    <string name="searching_users">Searching users</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

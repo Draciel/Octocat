@@ -1,48 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                     android:orientation="vertical"
-                                                     android:layout_width="match_parent"
-                                                     android:layout_height="match_parent"
-        >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
     <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            >
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <FrameLayout
-                android:layout_width="match_parent"
-                android:focusableInTouchMode="true"
-                android:layout_height="match_parent"
-                >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            >
 
             <androidx.appcompat.widget.SearchView
-                    android:id="@+id/search"
-                    app:queryHint="@string/search_users"
-                    android:background="@drawable/search_view_background"
-                    android:layout_width="match_parent"
-                    app:queryBackground="@color/white"
-                    android:layout_marginStart="@dimen/search_edit_text_margin_horizontal"
-                    android:layout_marginEnd="@dimen/search_edit_text_margin_horizontal"
-                    android:layout_gravity="center"
-                    app:iconifiedByDefault="false"
-                    android:layout_height="wrap_content"
-                    />
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/search_edit_text_margin_horizontal"
+                android:layout_marginEnd="@dimen/search_edit_text_margin_horizontal"
+                android:background="@drawable/search_view_background"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@color/white"
+                app:queryHint="@string/search_users"
+                />
 
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:id="@+id/search_recycler_view"
-            android:layout_width="match_parent"
-            android:paddingBottom="@dimen/bottom_navigation_height"
-            android:layout_height="match_parent"
+    <FrameLayout
+        android:id="@+id/progress_container"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="@dimen/action_bar_height"
+        android:padding="16dp"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawableStart="@drawable/ic_search_24px"
+            android:drawablePadding="8dp"
+            android:text="@string/searching_users"
+            android:textSize="16sp"
             />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            />
+
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/bottom_navigation_height"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

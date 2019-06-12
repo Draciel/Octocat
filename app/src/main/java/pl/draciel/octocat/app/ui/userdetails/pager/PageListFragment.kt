@@ -4,24 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.google.android.material.snackbar.Snackbar
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
 import pl.draciel.octocat.core.di.base.BaseFragment
+import pl.draciel.octocat.core.mvp.ErrorView
+import pl.draciel.octocat.core.mvp.ProgressView
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 
 typealias OnItemClickListener<T> = (item: T) -> Unit
 
-abstract class PageListFragment<T : Any> : InjectingPageListFragment() {
+abstract class PageListFragment<T : Any> : InjectingPageListFragment(), ProgressView, ErrorView {
 
     @BindView(R.id.recycler_view)
     lateinit var recyclerView: RecyclerView
+
+    @BindView(R.id.progress_bar)
+    lateinit var progressBar: ProgressBar
 
     protected lateinit var adapter: PageListRecyclerViewAdapter<T, *, *>
 
@@ -41,7 +48,29 @@ abstract class PageListFragment<T : Any> : InjectingPageListFragment() {
         adapter.setItems(items)
     }
 
+    override fun showProgress() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        progressBar.visibility = View.GONE
+    }
+
+    override fun showError(@StringRes message: Int) {
+        Snackbar.make(view!!, message, Snackbar.LENGTH_SHORT).show()
+    }
+
     abstract fun setOnItemClickListener(listener: OnItemClickListener<T>?)
+
+    override fun onStop() {
+        compositeDisposable.clear()
+        super.onStop()
+    }
+
+    override fun onDestroyView() {
+        loaded.set(false)
+        super.onDestroyView()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = LayoutInflater.from(context).inflate(getLayoutRes(), container, false)

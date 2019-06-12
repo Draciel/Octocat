@@ -8,10 +8,7 @@ import pl.draciel.octocat.app.ui.userdetails.EXTRA_USER_NAME
 import pl.draciel.octocat.app.ui.userdetails.pager.OnItemClickListener
 import pl.draciel.octocat.app.ui.userdetails.pager.PageListFragment
 import pl.draciel.octocat.app.ui.userdetails.pager.PageListRecyclerViewAdapter
-import pl.draciel.octocat.app.ui.userdetails.pager.coderepostiory.CodeRepositoryFragment
-import pl.draciel.octocat.app.ui.userdetails.pager.following.FollowingRecyclerDelegate
 import pl.draciel.octocat.core.adapters.SingleTypeDelegateManager
-import timber.log.Timber
 
 class StarredFragment : PageListFragment<CodeRepository>() {
 
@@ -21,31 +18,25 @@ class StarredFragment : PageListFragment<CodeRepository>() {
 
     override fun onPageSelected() {
         if (loaded.compareAndSet(false, true)) {
+            showProgress()
             compositeDisposable.add(
                 githubRepository.requestUserStarredCodeRepositories(userName)
                         .toList()
+                        .retry(3)
                         .subscribeOn(backgroundScheduler)
                         .observeOn(mainThreadScheduler)
-                        .retry(3)
+                        .doOnEvent { _, _ -> hideProgress() }
+                        .doOnDispose { hideProgress() }
                         .subscribeBy(
                             onSuccess = { setItems(it) },
                             onError = {
-                                Timber.e(it)
+                                // fixme enhance errors text based on http status/no internet
+                                showError(R.string.something_went_wrong)
                                 loaded.set(false)
                             }
                         )
             )
         }
-    }
-
-    override fun onStop() {
-        compositeDisposable.clear()
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        loaded.set(false)
-        super.onDestroyView()
     }
 
     override fun getLayoutRes(): Int = R.layout.fragment_page_list

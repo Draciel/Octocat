@@ -34,6 +34,7 @@ import pl.draciel.octocat.app.ui.userdetails.pager.following.FollowingsFragment
 import pl.draciel.octocat.app.ui.userdetails.pager.starred.StarredFragment
 import pl.draciel.octocat.concurrent.MainThreadScheduler
 import pl.draciel.octocat.core.di.base.BaseFragment
+import pl.draciel.octocat.core.utility.NavigationUtility
 import pl.draciel.octocat.imageloader.ImageLoader
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -89,9 +90,11 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
 
     private var currentUser: UserDetails? = null
 
-    private var onCodeRepositoryClickListener: OnItemClickListener<CodeRepository>? = {
-        Timber.d("Clicked repository %s", it)
-    }
+    private var onCodeRepositoryClickListener: OnItemClickListener<CodeRepository>? = {}
+    private var onEmailClickListener: View.OnClickListener? =
+        View.OnClickListener { NavigationUtility.openMailClient(emailTextView.text.toString(), context!!) }
+    private var onBlogClickListener: View.OnClickListener? =
+        View.OnClickListener { NavigationUtility.openWebBrowser(blogTextView.text.toString(), context!!) }
 
     private var onUserClickListener: OnItemClickListener<User>? = {
         val bundle = Bundle()
@@ -128,6 +131,8 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
             userDetailsPresenter.attachView(this)
         }
         observeOnMenuItemClick()
+        blogTextView.setOnClickListener(onBlogClickListener)
+        emailTextView.setOnClickListener(onEmailClickListener)
     }
 
     override fun onStop() {
@@ -135,6 +140,8 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
         userDetailsPresenter.detachView()
         viewPagerAdapter.pages.forEach { it.setOnItemClickListener(null) }
         compositeDisposable.clear()
+        blogTextView.setOnClickListener(null)
+        emailTextView.setOnClickListener(null)
     }
 
     override fun onDestroyView() {
@@ -173,6 +180,8 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
         } else {
             bioTextView.text = user.bio
         }
+        blogTextView.setOnClickListener(onBlogClickListener)
+        emailTextView.setOnClickListener(onEmailClickListener)
         // Load first page
         onPageSelected(0)
     }

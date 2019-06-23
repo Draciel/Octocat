@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.Unbinder
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Observable
 import io.reactivex.annotations.CheckReturnValue
 import io.reactivex.annotations.SchedulerSupport
-import kotlinx.android.synthetic.main.fragment_search.*
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.User
@@ -48,6 +48,8 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     @BindView(R.id.progress_container)
     lateinit var progressContainer: FrameLayout
 
+    private lateinit var unbinder: Unbinder
+
     private val onUserClickListener: OnUserClickListener = {
         val bundle = Bundle()
         bundle.putString(EXTRA_USER_NAME, it.login)
@@ -68,7 +70,7 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-        ButterKnife.bind(this, view)
+        unbinder = ButterKnife.bind(this, view)
         return view
     }
 
@@ -108,7 +110,7 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
         }
         searchUserRecyclerDelegate.onUserClickListener = onUserClickListener
         searchResultRecyclerView.adapter = searchAdapter
-        searchResultRecyclerView.layoutManager = LinearLayoutManager(context)
+        searchResultRecyclerView.layoutManager = LinearLayoutManager(activity)
         searchPresenter.attachView(this)
     }
 
@@ -145,10 +147,15 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         searchPresenter.destroy()
+        super.onDestroy()
+    }
+
+    override fun onDestroyView() {
         searchResultRecyclerView.adapter = null
         searchResultRecyclerView.layoutManager = null
+        unbinder.unbind()
+        super.onDestroyView()
     }
 
     // At the time we build component, context will be ready
@@ -156,9 +163,5 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
         return DaggerSearchComponent.builder()
                 .appComponent(GithubApp.getApplication(context!!).appComponent)
                 .build()
-    }
-
-    companion object {
-        fun create() = SearchFragment()
     }
 }

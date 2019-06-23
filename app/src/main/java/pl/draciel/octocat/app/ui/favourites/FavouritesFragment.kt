@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.Unbinder
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.FavouriteUser
-import pl.draciel.octocat.app.model.User
 import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerDelegate
 import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerViewAdapter
 import pl.draciel.octocat.app.ui.favourites.list.OnUserClickListener
@@ -40,6 +40,8 @@ class FavouritesFragment : BaseFragment<FavouritesComponent>(), FavouritesMVP.Vi
 
     private val navController: NavController by lazy { findNavController() }
 
+    private lateinit var unbinder: Unbinder
+
     private val onUserClickListener: OnUserClickListener = {
         val bundle = Bundle()
         bundle.putString(EXTRA_USER_NAME, it.login)
@@ -56,7 +58,7 @@ class FavouritesFragment : BaseFragment<FavouritesComponent>(), FavouritesMVP.Vi
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_favourites, container, false)
-        ButterKnife.bind(this, view)
+        unbinder = ButterKnife.bind(this, view)
         return view
     }
 
@@ -67,7 +69,7 @@ class FavouritesFragment : BaseFragment<FavouritesComponent>(), FavouritesMVP.Vi
         }
         toolbar.title = "Favourites"
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
         delegate.onUserClickListener = onUserClickListener
         presenter.attachView(this)
         presenter.loadFavouriteUsers()
@@ -95,15 +97,12 @@ class FavouritesFragment : BaseFragment<FavouritesComponent>(), FavouritesMVP.Vi
         super.onDestroyView()
         recyclerView.adapter = null
         recyclerView.layoutManager = null
+        unbinder.unbind()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         presenter.destroy()
-    }
-
-    companion object {
-        fun create() = FavouritesFragment()
     }
 
     override fun buildComponent(): FavouritesComponent {

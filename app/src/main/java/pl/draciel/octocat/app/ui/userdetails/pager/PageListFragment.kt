@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.Unbinder
 import com.google.android.material.snackbar.Snackbar
-import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
-import pl.draciel.octocat.core.di.base.BaseFragment
 import pl.draciel.octocat.core.mvp.ErrorView
 import pl.draciel.octocat.core.mvp.ProgressView
 import timber.log.Timber
@@ -33,6 +32,8 @@ abstract class PageListFragment<T : Any> : InjectingPageListFragment(), Progress
     protected lateinit var adapter: PageListRecyclerViewAdapter<T, *, *>
 
     protected val loaded: AtomicBoolean = AtomicBoolean(false)
+
+    private lateinit var unbinder: Unbinder
 
     @LayoutRes
     abstract fun getLayoutRes(): Int
@@ -69,18 +70,21 @@ abstract class PageListFragment<T : Any> : InjectingPageListFragment(), Progress
 
     override fun onDestroyView() {
         loaded.set(false)
+        recyclerView.adapter = null
+        recyclerView.layoutManager = null
+        unbinder.unbind()
         super.onDestroyView()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = LayoutInflater.from(context).inflate(getLayoutRes(), container, false)
-        ButterKnife.bind(this, view)
+        unbinder = ButterKnife.bind(this, view)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = createAdapter()
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 }

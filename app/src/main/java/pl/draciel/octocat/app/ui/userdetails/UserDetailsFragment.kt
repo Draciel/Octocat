@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.Unbinder
 import com.google.android.material.tabs.TabLayout
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -90,6 +91,8 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
 
     private var currentUser: UserDetails? = null
 
+    private lateinit var unbinder: Unbinder
+
     private var onCodeRepositoryClickListener: OnItemClickListener<CodeRepository>? = {}
     private var onEmailClickListener: View.OnClickListener? =
         View.OnClickListener { NavigationUtility.openMailClient(emailTextView.text.toString(), context!!) }
@@ -111,7 +114,7 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_user_details, container, false)
-        ButterKnife.bind(this, view)
+        unbinder = ButterKnife.bind(this, view)
         return view
     }
 
@@ -149,6 +152,7 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
         viewPager.adapter = null
         imageLoader.clear(avatar)
         compositeDisposable.clear()
+        unbinder.unbind()
         super.onDestroyView()
     }
 

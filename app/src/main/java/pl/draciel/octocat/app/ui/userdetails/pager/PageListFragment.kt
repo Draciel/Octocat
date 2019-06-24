@@ -43,8 +43,6 @@ abstract class PageListFragment<T : Any> : InjectingPageListFragment(), Progress
 
     abstract fun createAdapter(): PageListRecyclerViewAdapter<T, *, *>
 
-    abstract fun onPageSelected()
-
     fun setItems(items: List<T>) {
         adapter.setItems(items)
     }
@@ -65,6 +63,7 @@ abstract class PageListFragment<T : Any> : InjectingPageListFragment(), Progress
 
     override fun onStop() {
         compositeDisposable.clear()
+        setOnItemClickListener(null)
         super.onStop()
     }
 

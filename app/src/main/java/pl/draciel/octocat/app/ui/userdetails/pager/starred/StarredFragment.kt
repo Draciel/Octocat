@@ -16,7 +16,8 @@ class StarredFragment : PageListFragment<CodeRepository>() {
 
     private var starredRepositoryRecyclerDelegate: StarredRecyclerDelegate = StarredRecyclerDelegate()
 
-    override fun onPageSelected() {
+    override fun onResume() {
+        super.onResume()
         if (loaded.compareAndSet(false, true)) {
             showProgress()
             compositeDisposable.add(

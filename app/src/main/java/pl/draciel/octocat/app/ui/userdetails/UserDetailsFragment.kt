@@ -141,7 +141,6 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
     override fun onStop() {
         super.onStop()
         userDetailsPresenter.detachView()
-        viewPagerAdapter.pages.forEach { it.setOnItemClickListener(null) }
         compositeDisposable.clear()
         blogTextView.setOnClickListener(null)
         emailTextView.setOnClickListener(null)
@@ -166,8 +165,7 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
     override fun onPageSelected(position: Int) {
-        viewPagerAdapter.pages[position].onPageSelected()
-        val fragment: PageListFragment<*> = viewPagerAdapter.pages[position]
+        val fragment: PageListFragment<*> = viewPagerAdapter.getItem(position)
         attachOnClickListener(fragment)
     }
 
@@ -222,18 +220,17 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
             this.viewPagerAdapter = UserDetailsViewPagerAdapter(
                 childFragmentManager, context!!,
                 listOf(
-                    CodeRepositoryFragment.create(login),
-                    FollowersFragment.create(login),
-                    FollowingsFragment.create(login),
-                    StarredFragment.create(login)
-                )
-            )
+                    { CodeRepositoryFragment.create(login) },
+                    { FollowersFragment.create(login) },
+                    { FollowingsFragment.create(login) },
+                    { StarredFragment.create(login) }
+                ))
         }
         viewPager.adapter = viewPagerAdapter
-        viewPager.addOnPageChangeListener(this)
         // We can safely retain it as they are simple, recreating them every single time is much more cpu expensive
         viewPager.offscreenPageLimit = this.viewPagerAdapter.count
         tabLayout.setupWithViewPager(viewPager)
+        viewPager.addOnPageChangeListener(this)
     }
 
     private fun observeOnMenuItemClick() {

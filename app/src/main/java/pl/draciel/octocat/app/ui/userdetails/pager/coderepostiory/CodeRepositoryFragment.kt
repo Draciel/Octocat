@@ -16,7 +16,8 @@ class CodeRepositoryFragment : PageListFragment<CodeRepository>() {
 
     private var codeRepositoryRecyclerDelegate: CodeRepositoryRecyclerDelegate = CodeRepositoryRecyclerDelegate()
 
-    override fun onPageSelected() {
+    override fun onResume() {
+        super.onResume()
         if (loaded.compareAndSet(false, true)) {
             showProgress()
             compositeDisposable.add(

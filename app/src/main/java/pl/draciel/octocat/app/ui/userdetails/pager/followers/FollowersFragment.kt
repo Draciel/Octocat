@@ -16,7 +16,8 @@ class FollowersFragment : PageListFragment<User>() {
 
     private val followersRecyclerDelegate: FollowersRecyclerDelegate by lazy { FollowersRecyclerDelegate(imageLoader) }
 
-    override fun onPageSelected() {
+    override fun onResume() {
+        super.onResume()
         if (loaded.compareAndSet(false, true)) {
             showProgress()
             compositeDisposable.add(

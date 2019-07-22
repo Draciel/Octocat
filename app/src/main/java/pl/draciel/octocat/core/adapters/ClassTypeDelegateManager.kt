@@ -3,8 +3,7 @@ package pl.draciel.octocat.core.adapters
 import android.util.ArrayMap
 import androidx.recyclerview.widget.RecyclerView
 
-//fixme try to hide arrayMap implementation by creating builder for instance
-class ClassTypeDelegateManager<T : Any, VH : RecyclerView.ViewHolder, D : RecyclerDelegate<T, VH>>(
+class ClassTypeDelegateManager<T : Any, VH : RecyclerView.ViewHolder, D : RecyclerDelegate<T, VH>> private constructor(
     private val arrayMap: ArrayMap<Class<out T>, D>
 ) : DelegateManager<T, VH, D> {
 
@@ -20,5 +19,22 @@ class ClassTypeDelegateManager<T : Any, VH : RecyclerView.ViewHolder, D : Recycl
 
     override fun getViewType(item: T): Int {
         return arrayMap.indexOfKey(item::class.java)
+    }
+
+    class Builder<T : Any, VH : RecyclerView.ViewHolder, D : RecyclerDelegate<T, VH>>(capacity: Int? = null) {
+        private val map: ArrayMap<Class<out T>, D> = capacity?.let { ArrayMap(it) } ?: ArrayMap()
+        private var isBuilt = false
+
+        fun register(type: Class<out T>, delegate: D): Builder<T, VH, D> {
+            if (!isBuilt) {
+                map[type] = delegate
+            }
+            return this
+        }
+
+        fun build(): ClassTypeDelegateManager<T, VH, D> {
+            isBuilt = true
+            return ClassTypeDelegateManager(map)
+        }
     }
 }

@@ -10,7 +10,7 @@ import butterknife.ButterKnife
 import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.CodeRepository
 import pl.draciel.octocat.app.ui.search.DateTimeFormatters
-import pl.draciel.octocat.core.adapters.RecyclerDelegate
+import pl.draciel.rad.RecyclerDelegate
 
 typealias OnCodeRepositoryClickListener = (repo: CodeRepository) -> Unit
 

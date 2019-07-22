@@ -26,9 +26,9 @@ import pl.draciel.octocat.app.ui.search.list.SearchUserRecyclerDelegate
 import pl.draciel.octocat.app.ui.search.list.SearchUserRecyclerViewAdapter
 import pl.draciel.octocat.app.ui.userdetails.EXTRA_USER_NAME
 import pl.draciel.octocat.concurrent.SchedulerSupportExtension
-import pl.draciel.octocat.core.adapters.SingleTypeDelegateManager
 import pl.draciel.octocat.core.di.base.BaseFragment
 import pl.draciel.octocat.imageloader.ImageLoader
+import pl.draciel.rad.SingleTypeDelegateManager
 import javax.inject.Inject
 
 internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View {

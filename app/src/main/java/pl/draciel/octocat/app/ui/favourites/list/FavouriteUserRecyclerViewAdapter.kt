@@ -1,10 +1,9 @@
 package pl.draciel.octocat.app.ui.favourites.list
 
 import pl.draciel.octocat.app.model.FavouriteUser
-import pl.draciel.octocat.app.model.User
 import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerDelegate.ViewHolder
-import pl.draciel.octocat.core.adapters.BasicRecyclerViewAdapter
-import pl.draciel.octocat.core.adapters.DelegateManager
+import pl.draciel.rad.BasicRecyclerViewAdapter
+import pl.draciel.rad.DelegateManager
 
 internal class FavouriteUserRecyclerViewAdapter(
     delegateManager: DelegateManager<FavouriteUser, ViewHolder, FavouriteUserRecyclerDelegate>

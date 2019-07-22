@@ -19,9 +19,9 @@ import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerDelegate
 import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerViewAdapter
 import pl.draciel.octocat.app.ui.favourites.list.OnUserClickListener
 import pl.draciel.octocat.app.ui.userdetails.EXTRA_USER_NAME
-import pl.draciel.octocat.core.adapters.SingleTypeDelegateManager
 import pl.draciel.octocat.core.di.base.BaseFragment
 import pl.draciel.octocat.imageloader.ImageLoader
+import pl.draciel.rad.SingleTypeDelegateManager
 import javax.inject.Inject
 
 class FavouritesFragment : BaseFragment<FavouritesComponent>(), FavouritesMVP.View {

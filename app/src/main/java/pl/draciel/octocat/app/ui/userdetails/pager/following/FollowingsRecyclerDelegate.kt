@@ -12,8 +12,8 @@ import pl.draciel.octocat.R
 import pl.draciel.octocat.app.model.User
 import pl.draciel.octocat.app.ui.userdetails.pager.following.FollowingRecyclerDelegate.ViewHolder
 import pl.draciel.octocat.core.adapters.ClearableViewHolder
-import pl.draciel.octocat.core.adapters.RecyclerDelegate
 import pl.draciel.octocat.imageloader.ImageLoader
+import pl.draciel.rad.RecyclerDelegate
 
 typealias OnFollowingClickListener = (user: User) -> Unit
 

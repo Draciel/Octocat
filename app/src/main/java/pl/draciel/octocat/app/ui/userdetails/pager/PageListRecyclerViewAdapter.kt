@@ -1,10 +1,10 @@
 package pl.draciel.octocat.app.ui.userdetails.pager
 
 import androidx.recyclerview.widget.RecyclerView
-import pl.draciel.octocat.core.adapters.BasicRecyclerViewAdapter
 import pl.draciel.octocat.core.adapters.ClearableViewHolder
-import pl.draciel.octocat.core.adapters.DelegateManager
-import pl.draciel.octocat.core.adapters.RecyclerDelegate
+import pl.draciel.rad.BasicRecyclerViewAdapter
+import pl.draciel.rad.DelegateManager
+import pl.draciel.rad.RecyclerDelegate
 
 class PageListRecyclerViewAdapter<T, VH, D>(delegateManager: DelegateManager<T, VH, D>) :
     BasicRecyclerViewAdapter<T, VH, D>(delegateManager)

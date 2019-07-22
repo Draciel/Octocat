@@ -1,8 +1,8 @@
 package pl.draciel.octocat.app.ui.search.list
 
 import pl.draciel.octocat.app.model.User
-import pl.draciel.octocat.core.adapters.BasicRecyclerViewAdapter
-import pl.draciel.octocat.core.adapters.DelegateManager
+import pl.draciel.rad.BasicRecyclerViewAdapter
+import pl.draciel.rad.DelegateManager
 
 class SearchUserRecyclerViewAdapter(
     delegateManager: DelegateManager<User, SearchUserRecyclerDelegate.ViewHolder, SearchUserRecyclerDelegate>

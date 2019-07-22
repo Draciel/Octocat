@@ -8,7 +8,7 @@ import pl.draciel.octocat.app.ui.userdetails.EXTRA_USER_NAME
 import pl.draciel.octocat.app.ui.userdetails.pager.OnItemClickListener
 import pl.draciel.octocat.app.ui.userdetails.pager.PageListFragment
 import pl.draciel.octocat.app.ui.userdetails.pager.PageListRecyclerViewAdapter
-import pl.draciel.octocat.core.adapters.SingleTypeDelegateManager
+import pl.draciel.rad.SingleTypeDelegateManager
 
 class FollowersFragment : PageListFragment<User>() {
 

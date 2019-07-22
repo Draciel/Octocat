@@ -34,6 +34,7 @@ ext {
     room_runtime_version = "2.1.0-alpha06"
     room_compiler_version = room_runtime_version
     room_rxjava2_version = room_runtime_version
+    adapter_delegates_version = "-SNAPSHOT"
 
     appDependencies = [
             dagger2               : "com.google.dagger:dagger:$dagger2_version",
@@ -64,7 +65,8 @@ ext {
             leakCanary            : "com.squareup.leakcanary:leakcanary-android:$leak_canary_version",
             roomRuntime           : "androidx.room:room-runtime:$room_runtime_version",
             roomCompiler          : "androidx.room:room-compiler:$room_compiler_version",
-            roomRxjava2           : "androidx.room:room-rxjava2:$room_rxjava2_version"
+            roomRxjava2           : "androidx.room:room-rxjava2:$room_rxjava2_version",
+            adapterDelegates      : "com.github.Draciel:Recycler-Adapter-Delegates:$adapter_delegates_version"
     ]
 
     junit_version = '4.12'

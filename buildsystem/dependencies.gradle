@@ -34,7 +34,7 @@ ext {
     room_runtime_version = "2.1.0-alpha06"
     room_compiler_version = room_runtime_version
     room_rxjava2_version = room_runtime_version
-    adapter_delegates_version = "-SNAPSHOT"
+    adapter_delegates_version = "b1a74fecda"
 
     appDependencies = [
             dagger2               : "com.google.dagger:dagger:$dagger2_version",

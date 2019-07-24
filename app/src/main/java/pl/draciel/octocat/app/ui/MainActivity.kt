@@ -1,33 +1,16 @@
 package pl.draciel.octocat.app.ui
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.setupActionBarWithNavController
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import pl.draciel.octocat.GithubApp
 import pl.draciel.octocat.R
-import pl.draciel.octocat.app.model.User
 import pl.draciel.octocat.core.di.base.BaseActivity
 import pl.draciel.octocat.core.di.components.ActivityComponent
 import pl.draciel.octocat.core.di.components.DaggerActivityComponent
-import pl.draciel.octocat.github.GithubRepository
-import timber.log.Timber
-import javax.inject.Inject
 
 class MainActivity : BaseActivity<ActivityComponent>() {
-
-    @Inject
-    lateinit var githubRepository: GithubRepository
-
-    private val compositeDisposable = CompositeDisposable()
 
     private val navController: NavController by lazy { findNavController(R.id.nav_host_fragment) }
 
@@ -51,11 +34,6 @@ class MainActivity : BaseActivity<ActivityComponent>() {
         buildComponent().inject(this)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        compositeDisposable.clear()
     }
 
     override fun buildComponent(): ActivityComponent {

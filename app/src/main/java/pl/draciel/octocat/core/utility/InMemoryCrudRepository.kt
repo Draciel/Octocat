@@ -6,6 +6,8 @@ import java.util.concurrent.atomic.AtomicLong
 
 typealias IdProvider<T> = (T) -> Long
 typealias IdChanger<T> = (T, Long) -> T
+typealias SaveListener<T> = (T) -> Unit
+typealias DeleteListener<T> = (T) -> Unit
 
 abstract class InMemoryCrudRepository<T>(
     protected val idProvider: IdProvider<T>,
@@ -31,7 +33,7 @@ abstract class InMemoryCrudRepository<T>(
         }
         db[id] = objectToSave
         val savedObj = db[id] as S
-        saveListeners.forEach { l -> l.onSave(savedObj) }
+        saveListeners.forEach { l -> l(savedObj) }
         return savedObj
     }
 
@@ -54,7 +56,7 @@ abstract class InMemoryCrudRepository<T>(
 
     fun deleteById(id: Long) {
         deleteListeners.forEach { l ->
-            findById(id)?.let { o -> l.onDelete(o) }
+            findById(id)?.let { o -> l(o) }
         }
         db.remove(id)
     }

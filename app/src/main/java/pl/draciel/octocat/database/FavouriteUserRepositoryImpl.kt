@@ -18,11 +18,9 @@ internal class FavouriteUserRepositoryImpl(private val dao: FavouriteUserDao) : 
             .toList()
             .flatMapCompletable { dao.saveAll(it) }
 
-
     override fun update(user: FavouriteUser): Completable = Single.just(user)
             .map { it.toUserEntity() }
             .flatMapCompletable { dao.update(it) }
-
 
     override fun delete(user: FavouriteUser): Completable = Single.just(user)
             .map { it.toUserEntity() }

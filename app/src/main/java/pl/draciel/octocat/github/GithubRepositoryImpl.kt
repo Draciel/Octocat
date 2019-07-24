@@ -12,8 +12,7 @@ import pl.draciel.octocat.github.api.model.GithubUser
 import pl.draciel.octocat.github.api.model.GithubUserDetails
 import java.net.HttpURLConnection
 
-internal class GithubRepositoryImpl(private val githubService: GithubService) :
-    GithubRepository {
+internal class GithubRepositoryImpl(private val githubService: GithubService) : GithubRepository {
 
     override fun requestUser(user: String): Single<UserDetails> = githubService.getUser(user)
             .compose(ResponseTransformers.httpStatus(HttpURLConnection.HTTP_NOT_FOUND))

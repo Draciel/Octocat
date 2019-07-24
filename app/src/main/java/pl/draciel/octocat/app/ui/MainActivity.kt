@@ -15,13 +15,18 @@ class MainActivity : BaseActivity<ActivityComponent>() {
     private val navController: NavController by lazy { findNavController(R.id.nav_host_fragment) }
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        val currentDestination = navController.currentDestination?.id ?: 0
         when (item.itemId) {
             R.id.navigation_search -> {
-                navController.navigate(R.id.search_fragment)
+                if (currentDestination != R.id.search_fragment) {
+                    navController.navigate(R.id.search_fragment)
+                }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_favourites -> {
-                navController.navigate(R.id.favourites_fragment)
+                if (currentDestination != R.id.favourites_fragment) {
+                    navController.navigate(R.id.favourites_fragment)
+                }
                 return@OnNavigationItemSelectedListener true
             }
         }

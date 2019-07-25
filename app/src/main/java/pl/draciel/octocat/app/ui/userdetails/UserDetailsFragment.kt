@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -98,11 +99,10 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
         View.OnClickListener { NavigationUtility.openMailClient(emailTextView.text.toString(), context!!) }
     private var onBlogClickListener: View.OnClickListener? =
         View.OnClickListener { NavigationUtility.openWebBrowser(blogTextView.text.toString(), context!!) }
+    private val args: UserDetailsFragmentArgs by navArgs()
 
     private var onUserClickListener: OnItemClickListener<User>? = {
-        val bundle = Bundle()
-        bundle.putString(EXTRA_USER_NAME, it.login)
-        navController.navigate(R.id.user_fragment, bundle)
+        navController.navigate(UserDetailsFragmentDirections.actionUserFragmentToUserFragment(it.login))
     }
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
@@ -119,12 +119,10 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val login = arguments?.getString(EXTRA_USER_NAME)
+        val login = args.userName
         userDetailsPresenter.attachView(this)
-        if (login != null) {
-            toolbar.title = login
-            userDetailsPresenter.loadUserDetails(login)
-        }
+        toolbar.title = login
+        userDetailsPresenter.loadUserDetails(login)
         setupViewPager()
     }
 
@@ -216,7 +214,7 @@ class UserDetailsFragment : BaseFragment<UserDetailsComponent>(), UserDetailsMVP
 
     private fun setupViewPager() {
         if (!this::viewPagerAdapter.isInitialized) {
-            val login = arguments?.getString(EXTRA_USER_NAME) ?: ""
+            val login = args.userName
             this.viewPagerAdapter = UserDetailsViewPagerAdapter(
                 childFragmentManager, context!!,
                 listOf(

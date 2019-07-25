@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import pl.draciel.octocat.GithubApp
+import pl.draciel.octocat.NavGraphDirections
 import pl.draciel.octocat.R
 import pl.draciel.octocat.core.di.base.BaseActivity
 import pl.draciel.octocat.core.di.components.ActivityComponent
@@ -19,13 +20,13 @@ class MainActivity : BaseActivity<ActivityComponent>() {
         when (item.itemId) {
             R.id.navigation_search -> {
                 if (currentDestination != R.id.search_fragment) {
-                    navController.navigate(R.id.search_fragment)
+                    navController.navigate(NavGraphDirections.actionGlobalSearchFragment())
                 }
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_favourites -> {
                 if (currentDestination != R.id.favourites_fragment) {
-                    navController.navigate(R.id.favourites_fragment)
+                    navController.navigate(NavGraphDirections.actionGlobalFavouritesFragment())
                 }
                 return@OnNavigationItemSelectedListener true
             }

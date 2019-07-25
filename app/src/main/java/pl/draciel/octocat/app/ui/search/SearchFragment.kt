@@ -24,7 +24,6 @@ import pl.draciel.octocat.app.model.User
 import pl.draciel.octocat.app.ui.search.list.OnUserClickListener
 import pl.draciel.octocat.app.ui.search.list.SearchUserRecyclerDelegate
 import pl.draciel.octocat.app.ui.search.list.SearchUserRecyclerViewAdapter
-import pl.draciel.octocat.app.ui.userdetails.EXTRA_USER_NAME
 import pl.draciel.octocat.concurrent.SchedulerSupportExtension
 import pl.draciel.octocat.core.di.base.BaseFragment
 import pl.draciel.octocat.imageloader.ImageLoader
@@ -51,9 +50,7 @@ internal class SearchFragment : BaseFragment<SearchComponent>(), SearchMVP.View 
     private lateinit var unbinder: Unbinder
 
     private val onUserClickListener: OnUserClickListener = {
-        val bundle = Bundle()
-        bundle.putString(EXTRA_USER_NAME, it.login)
-        navController.navigate(R.id.user_fragment, bundle)
+        navController.navigate(SearchFragmentDirections.actionSearchFragmentToUserFragment(it.login))
     }
 
     private lateinit var searchAdapter: SearchUserRecyclerViewAdapter

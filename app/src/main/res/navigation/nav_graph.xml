@@ -11,9 +11,6 @@
         <action
             android:id="@+id/action_searchFragment_to_userFragment"
             app:destination="@id/user_fragment" />
-        <action
-            android:id="@+id/action_search_fragment_to_favourites_fragment"
-            app:destination="@id/favourites_fragment" />
     </fragment>
 
     <fragment
@@ -23,14 +20,30 @@
         <action
             android:id="@+id/action_userFragment_to_userFragment"
             app:destination="@id/user_fragment" />
+        <argument
+            android:name="userName"
+            app:argType="string" />
     </fragment>
 
     <fragment
         android:id="@+id/favourites_fragment"
         android:name="pl.draciel.octocat.app.ui.favourites.FavouritesFragment"
-        android:label="FavouritesFragment" >
+        android:label="FavouritesFragment">
         <action
             android:id="@+id/action_favourites_fragment_to_user_fragment"
             app:destination="@id/user_fragment" />
     </fragment>
+
+    <action
+        android:id="@+id/action_global_search_fragment"
+        app:destination="@id/search_fragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_favourites_fragment"
+        app:destination="@id/favourites_fragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true" />
 </navigation>

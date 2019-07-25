@@ -18,7 +18,6 @@ import pl.draciel.octocat.app.model.FavouriteUser
 import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerDelegate
 import pl.draciel.octocat.app.ui.favourites.list.FavouriteUserRecyclerViewAdapter
 import pl.draciel.octocat.app.ui.favourites.list.OnUserClickListener
-import pl.draciel.octocat.app.ui.userdetails.EXTRA_USER_NAME
 import pl.draciel.octocat.core.di.base.BaseFragment
 import pl.draciel.octocat.imageloader.ImageLoader
 import pl.draciel.rad.SingleTypeDelegateManager
@@ -43,9 +42,7 @@ class FavouritesFragment : BaseFragment<FavouritesComponent>(), FavouritesMVP.Vi
     private lateinit var unbinder: Unbinder
 
     private val onUserClickListener: OnUserClickListener = {
-        val bundle = Bundle()
-        bundle.putString(EXTRA_USER_NAME, it.login)
-        navController.navigate(R.id.user_fragment, bundle)
+        navController.navigate(FavouritesFragmentDirections.actionFavouritesFragmentToUserFragment(it.login))
     }
 
     private lateinit var delegate: FavouriteUserRecyclerDelegate

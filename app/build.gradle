@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs"
 
 android {
     def config = rootProject.extensions.getByName("ext")
@@ -25,6 +26,9 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -55,7 +59,7 @@ dependencies {
     implementation appDependencies.okio
     implementation appDependencies.abpThreeten
     implementation appDependencies.navigationFragment
-    implementation appDependencies.navigationUiKtx
+    implementation appDependencies.navigationUi
     implementation appDependencies.butterknife
     kapt appDependencies.butterknifeCompiler
     debugImplementation appDependencies.leakCanary

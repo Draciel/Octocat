@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/search_fragment">
 
     <fragment
         android:id="@+id/search_fragment"
         android:name="pl.draciel.octocat.app.ui.search.SearchFragment"
-        android:label="SearchFragment">
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_userFragment"
             app:destination="@id/user_fragment" />
@@ -16,7 +18,8 @@
     <fragment
         android:id="@+id/user_fragment"
         android:name="pl.draciel.octocat.app.ui.userdetails.UserDetailsFragment"
-        android:label="UserDetailsFragment">
+        android:label="UserDetailsFragment"
+        tools:layout="@layout/fragment_user_details">
         <action
             android:id="@+id/action_userFragment_to_userFragment"
             app:destination="@id/user_fragment" />
@@ -28,7 +31,8 @@
     <fragment
         android:id="@+id/favourites_fragment"
         android:name="pl.draciel.octocat.app.ui.favourites.FavouritesFragment"
-        android:label="FavouritesFragment">
+        android:label="FavouritesFragment"
+        tools:layout="@layout/fragment_favourites">
         <action
             android:id="@+id/action_favourites_fragment_to_user_fragment"
             app:destination="@id/user_fragment" />
